@@ -18,6 +18,18 @@
 
 GroupBot is a bot that allows you to share information about yourself with the team. It was initially created to share information for ordering tshirts. It currently stores data in a Google Sheet.
 
+## Configuration
+
+Set the following environment variables:
+
+* `DATABOT_ENGINE`
+* `GOOGLE_SERVICE_ACCOUNT_JWT`
+* `GOOGLE_SHEET_INDEX`
+* `GOOGLE_SPREADSHEET_ID`
+* `RINGCENTRAL_BOT_ID`
+* `RINGCENTRAL_SERVER_URL`
+* `RINGCENTRAL_TOKEN_JSON`
+
 ## Using the AWS Engine
 
 To use the AWS Lambda engine, you need an AWS account. If you don't hae one, the [free trial account](https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free_np/) includes 1 million free Lambda requests per month forever and 1 million free API Gateway requests per month for the first year.
