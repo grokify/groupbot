@@ -10,7 +10,7 @@
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/groupbot
  [goreport-link]: https://goreportcard.com/report/github.com/grokify/groupbot
  [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.groupbot
- [docs-godoc-link]: https://godoc.org/github.com/grokify/googleutil
+ [docs-godoc-link]: https://godoc.org/github.com/grokify/groupbot
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
  [license-link]: https://github.com/grokify/groupbot/blob/master/LICENSE
 
