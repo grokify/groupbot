@@ -211,7 +211,7 @@ func (h *AnyHTTPHandler) ListAsGlipCreatePost() rc.GlipCreatePost {
 
 	outputs := []string{}
 
-	for i, _ := range displays {
+	for i := range displays {
 		if i < len(keys) {
 			key := keys[i]
 			if output, ok := keysMap[key]; ok {
