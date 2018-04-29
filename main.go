@@ -343,7 +343,7 @@ func (h *AnyHTTPHandler) ProcessEvent(reqBodyBytes []byte) (EventResponse, error
 		log.Warn(err)
 		return EventResponse{
 			StatusCode: http.StatusBadRequest,
-			Message:    fmt.Sprintf("400 Cannot unmarshal to GlipPostEvent: ", err.Error()),
+			Message:    fmt.Sprintf("400 Cannot unmarshal to GlipPostEvent: %v", err.Error()),
 		}, nil
 	}
 	log.Info(string(jsonutil.MustMarshal(glipPostEvent, true)))
@@ -517,10 +517,6 @@ func (h *AnyHTTPHandler) ProcessEvent(reqBodyBytes []byte) (EventResponse, error
 		reqBody = h.ItemToGlipCreatePost(fmt.Sprintf("Thanks for the update %v. Here's your info", name), item)
 		return h.SendGlipPost(glipPostEvent.GroupId, reqBody)
 	}
-
-	return EventResponse{
-		StatusCode: http.StatusOK,
-	}, nil
 }
 
 func (h *AnyHTTPHandler) SendGlipPost(groupId string, reqBody rc.GlipCreatePost) (EventResponse, error) {
