@@ -1,5 +1,19 @@
 # GroupBot
 
+[![Build Status][build-status-svg]][build-status-link]
+[![Go Report Card][goreport-svg]][goreport-link]
+[![Docs][docs-godoc-svg]][docs-godoc-link]
+[![License][license-svg]][license-link]
+
+ [build-status-svg]: https://api.travis-ci.org/grokify/groupbot.svg?branch=master
+ [build-status-link]: https://travis-ci.org/grokify/groupbot
+ [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/groupbot
+ [goreport-link]: https://goreportcard.com/report/github.com/grokify/groupbot
+ [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.groupbot
+ [docs-godoc-link]: https://godoc.org/github.com/grokify/googleutil
+ [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
+ [license-link]: https://github.com/grokify/groupbot/blob/master/LICENSE
+
 ## Overview
 
 GroupBot is a bot that allows you to share information about yourself with the team. It was initially created to share information for ordering tshirts. It currently stores data in a Google Sheet.
