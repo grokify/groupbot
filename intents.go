@@ -41,7 +41,6 @@ func (ir *IntentRouter) ProcessRequest(bot *Groupbot, textNoBotMention string, g
 			for _, try := range intent.Strings {
 				if try == textNoBotMentionLc {
 					return intent.HandleIntent(bot, glipPost, creator)
-					break
 				}
 			}
 		} else if intent.Type == MatchAny {
