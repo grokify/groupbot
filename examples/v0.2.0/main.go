@@ -34,11 +34,11 @@ func main() {
 	intentRouter := groupbot.IntentRouter{
 		Intents: []groupbot.Intent{
 			help.NewIntent(),
-			list.NewIntent(),
-			stats.NewIntent(),
 			info.NewIntent(),
+			list.NewIntent(),
 			me.NewIntent(),
-			set.NewIntent(),
+			stats.NewIntent(),
+			set.NewIntent(), // Default
 		},
 	}
 
