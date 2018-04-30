@@ -1,4 +1,4 @@
-package config
+package groupbot
 
 import (
 	"context"
@@ -15,6 +15,7 @@ import (
 )
 
 type AppConfig struct {
+	Port                  int64  `env:"GROUPBOT_PORT"`
 	RingCentralTokenJSON  string `env:"RINGCENTRAL_TOKEN_JSON"`
 	RingCentralServerURL  string `env:"RINGCENTRAL_SERVER_URL"`
 	RingCentralWebhookURL string `env:"RINGCENTRAL_WEBHOOK_URL"`
@@ -34,7 +35,6 @@ func GetRingCentralApiClient(appConfig AppConfig) (*rc.APIClient, error) {
 	}
 
 	url := "https://platform.ringcentral.com/restapi/v1.0/glip/groups"
-
 	url = "https://platform.ringcentral.com/restapi/v1.0/subscription"
 
 	resp, err := rcHttpClient.Get(url)

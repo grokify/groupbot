@@ -52,12 +52,6 @@ var anyHTTPHandler = AnyHTTPHandler{
 	Port: 8080,
 }
 
-type EventResponse struct {
-	StatusCode int               `json:"statusCode,omitempty"`
-	Headers    map[string]string `json:"headers,omitempty"`
-	Message    string            `json:"message,omitempty"`
-}
-
 func (er *EventResponse) ToJson() []byte {
 	if len(er.Message) == 0 {
 		er.Message = ""
@@ -317,6 +311,35 @@ func (h *AnyHTTPHandler) HelpAsGlipCreatePost(numGroupMembers int64) rc.GlipCrea
 		reqBody.Text = fmt.Sprintf("Hi there, I'm here to help you share some data. Here are some things you can do use me:\n\n* You can set the following fields: %s\n* To set a field, say `<field> <value>`%s.%s\n* Additional commands include `me`, `list`, `stats`, and `info`\n* If there are more than 2 people in our conversation, you will need to @ mention me", strings.Join(colNames, ", "), exampleText, enumsText)
 	}
 	return reqBody
+}
+
+func InitializeRouter() {
+	router := IntentRouter{}
+	intent := Intent{
+		Type:   MatchStringLowerCase,
+		String: "help",
+	}
+	router.Intents
+}
+
+func (router *IntentRouter) ProcessEvent() {
+	for _, intent := range Intents {
+
+	}
+}
+
+func (router *IntentRouter) IntentMatch() {
+
+}
+
+type Request struct {
+	IntentType IntentType
+	Post
+	PostCreator *rc.GlipPersonInfo
+}
+
+func HelpIntent(cfg *appConfig, glipPost *rc.GlipPostEvent, creator *rc.GlipPersonInfo) EventResponse {
+
 }
 
 func (h *AnyHTTPHandler) ProcessEvent(reqBodyBytes []byte) (EventResponse, error) {
