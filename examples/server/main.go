@@ -18,8 +18,8 @@ import (
 )
 
 func main() {
+	// Check and load environment file if necessary
 	engine := os.Getenv("GROUPBOT_ENGINE")
-
 	if len(engine) == 0 {
 		err := cfg.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
 		if err != nil {
@@ -28,6 +28,7 @@ func main() {
 		engine = os.Getenv("GROUPBOT_ENGINE")
 	}
 
+	// Set intents
 	intentRouter := groupbot.IntentRouter{
 		Intents: []groupbot.Intent{
 			help.NewIntent(),
@@ -39,6 +40,7 @@ func main() {
 		},
 	}
 
+	// Run engine
 	switch engine {
 	case "aws":
 		log.Info("Starting Engine [aws-lambda]")
