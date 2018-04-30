@@ -23,7 +23,7 @@ func main() {
 	if len(engine) == 0 {
 		err := cfg.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
 		if err != nil {
-			log.Info(err)
+			log.Warn(err)
 		}
 		engine = os.Getenv("GROUPBOT_ENGINE")
 	}
