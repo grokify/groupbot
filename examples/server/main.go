@@ -28,9 +28,6 @@ func main() {
 		engine = os.Getenv("GROUPBOT_ENGINE")
 	}
 
-	log.Info(fmt.Sprintf(
-		"Using Google Spreadsheet Id [%v]", os.Getenv("GOOGLE_SPREADSHEET_ID")))
-
 	intentRouter := groupbot.IntentRouter{
 		Intents: []groupbot.Intent{
 			help.NewIntent(),
