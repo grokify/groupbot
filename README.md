@@ -22,7 +22,8 @@ GroupBot is a bot that allows you to share information about yourself with the t
 
 Set the following environment variables:
 
-* `DATABOT_ENGINE`
+* `GROUPBOT_ENGINE`            // `aws` or `nethttp`
+* `GROUPBOT_PORT`              // for `net/http`
 * `GOOGLE_SERVICE_ACCOUNT_JWT`
 * `GOOGLE_SHEET_INDEX`
 * `GOOGLE_SPREADSHEET_ID`
