@@ -1,6 +1,8 @@
 package list
 
 import (
+	"fmt"
+	"math/rand"
 	"sort"
 	"strings"
 
@@ -24,12 +26,11 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 }
 
 func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
-	displays := []string{}
-	keys := []string{}
+	displayKeysLc := []string{}
 	keysMap := map[string]string{}
 	for _, item := range bot.SheetsMap.ItemMap {
-		displays = append(displays, item.Display)
-		keys = append(keys, item.Key)
+		displayKeyLc := fmt.Sprintf("%v %v", strings.ToLower(item.Display), rand.Int63())
+		displayKeysLc = append(displayKeysLc, displayKeyLc)
 		vals := []string{}
 		for _, col := range bot.SheetsMap.DataColumnsKeys() {
 			if itemVal, ok := item.Data[col]; ok {
@@ -44,18 +45,16 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 			}
 		}
 		itemString := item.Display + " - " + strings.Join(vals, ", ")
-		keysMap[item.Key] = itemString
+		keysMap[displayKeyLc] = itemString
 	}
-	sort.Strings(displays)
+
+	sort.Strings(displayKeysLc)
 
 	outputs := []string{}
 
-	for i := range displays {
-		if i < len(keys) {
-			key := keys[i]
-			if output, ok := keysMap[key]; ok {
-				outputs = append(outputs, output)
-			}
+	for _, displayKeyLc := range displayKeysLc {
+		if output, ok := keysMap[displayKeyLc]; ok {
+			outputs = append(outputs, output)
 		}
 	}
 
