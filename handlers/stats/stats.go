@@ -18,12 +18,12 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func HandleIntent(bot *groupbot.Groupbot, glipPostEvent *rc.GlipPostEvent, creator *rc.GlipPersonInfo) (*groupbot.EventResponse, error) {
+func HandleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
 	glipPost, err := BuildPost(bot)
 	if err != nil {
 		return nil, err
 	}
-	return bot.SendGlipPost(glipPostEvent.GroupId, glipPost)
+	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }
 
 func BuildPost(bot *groupbot.Groupbot) (rc.GlipCreatePost, error) {
@@ -44,6 +44,7 @@ func BuildPost(bot *groupbot.Groupbot) (rc.GlipCreatePost, error) {
 		header := "count - " + strings.Join(colKeys, ", ")
 		statsTextsString = header + "\n* " + strings.Join(statsTexts, "\n* ")
 	}
+
 	reqBody.Text = "Here's the current stats:"
 	reqBody.Attachments = []rc.GlipMessageAttachmentInfoRequest{{
 		Type_: "Card",

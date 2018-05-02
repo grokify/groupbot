@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"regexp"
 	"strings"
-
-	rc "github.com/grokify/go-ringcentral/client"
 )
 
 type EventResponse struct {
@@ -33,18 +31,18 @@ func NewIntentRouter() IntentRouter {
 	return IntentRouter{Intents: []Intent{}}
 }
 
-func (ir *IntentRouter) ProcessRequest(bot *Groupbot, textNoBotMention string, glipPost *rc.GlipPostEvent, creator *rc.GlipPersonInfo) (*EventResponse, error) {
+func (ir *IntentRouter) ProcessRequest(bot *Groupbot, textNoBotMention string, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
 	textNoBotMention = strings.TrimSpace(textNoBotMention)
 	textNoBotMentionLc := strings.ToLower(textNoBotMention)
 	for _, intent := range ir.Intents {
 		if intent.Type == MatchStringLowerCase {
 			for _, try := range intent.Strings {
 				if try == textNoBotMentionLc {
-					return intent.HandleIntent(bot, glipPost, creator)
+					return intent.HandleIntent(bot, glipPostEventInfo)
 				}
 			}
 		} else if intent.Type == MatchAny {
-			return intent.HandleIntent(bot, glipPost, creator)
+			return intent.HandleIntent(bot, glipPostEventInfo)
 		}
 	}
 	return &EventResponse{}, nil
@@ -63,5 +61,5 @@ type Intent struct {
 	Type         IntentType
 	Strings      []string
 	Regexps      []*regexp.Regexp
-	HandleIntent func(bot *Groupbot, glipPost *rc.GlipPostEvent, creator *rc.GlipPersonInfo) (*EventResponse, error)
+	HandleIntent func(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error)
 }

@@ -3,8 +3,8 @@ package groupbot
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
+	"strings"
 
 	rc "github.com/grokify/go-ringcentral/client"
 	ru "github.com/grokify/go-ringcentral/clientutil"
@@ -16,6 +16,9 @@ import (
 
 type AppConfig struct {
 	Port                  int64  `env:"GROUPBOT_PORT"`
+	GroupbotName          string `env:"GROUPBOT_NAME"`
+	GroupbotAutoAtMention bool   `env:"GROUPBOT_AUTO_AT_MENTION"`
+	GroupbotPostSuffix    string `env:"GROUPBOT_POST_SUFFIX"`
 	RingCentralTokenJSON  string `env:"RINGCENTRAL_TOKEN_JSON"`
 	RingCentralServerURL  string `env:"RINGCENTRAL_SERVER_URL"`
 	RingCentralWebhookURL string `env:"RINGCENTRAL_WEBHOOK_URL"`
@@ -23,6 +26,14 @@ type AppConfig struct {
 	GoogleSvcAccountJWT   string `env:"GOOGLE_SERVICE_ACCOUNT_JWT"`
 	GoogleSpreadsheetId   string `env:"GOOGLE_SPREADSHEET_ID"`
 	GoogleSheetIndex      int64  `env:"GOOGLE_SHEET_INDEX"`
+}
+
+func (ac *AppConfig) AppendPostSuffix(s string) string {
+	suffix := strings.TrimSpace(ac.GroupbotPostSuffix)
+	if len(suffix) > 0 {
+		return s + " " + suffix
+	}
+	return s
 }
 
 func GetRingCentralApiClient(appConfig AppConfig) (*rc.APIClient, error) {
@@ -33,17 +44,17 @@ func GetRingCentralApiClient(appConfig AppConfig) (*rc.APIClient, error) {
 	if err != nil {
 		return nil, err
 	}
+	/*
+		url := "https://platform.ringcentral.com/restapi/v1.0/glip/groups"
+		url = "https://platform.ringcentral.com/restapi/v1.0/subscription"
 
-	url := "https://platform.ringcentral.com/restapi/v1.0/glip/groups"
-	url = "https://platform.ringcentral.com/restapi/v1.0/subscription"
-
-	resp, err := rcHttpClient.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	} else if resp.StatusCode >= 300 {
-		log.Fatal(fmt.Errorf("API Error %v", resp.StatusCode))
-	}
-
+		resp, err := rcHttpClient.Get(url)
+		if err != nil {
+			log.Fatal(err)
+		} else if resp.StatusCode >= 300 {
+			log.Fatal(fmt.Errorf("API Error %v", resp.StatusCode))
+		}
+	*/
 	return ru.NewApiClientHttpClientBaseURL(
 		rcHttpClient, appConfig.RingCentralServerURL,
 	)

@@ -15,9 +15,6 @@ import (
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
 	"github.com/grokify/gotilla/encoding/jsonutil"
 	log "github.com/sirupsen/logrus"
-	//om "github.com/grokify/oauth2more"
-	//gu "github.com/grokify/oauth2more/google"
-	//"google.golang.org/api/sheets/v4"
 )
 
 const ValidationTokenHeader = "Validation-Token"
@@ -28,6 +25,12 @@ type Groupbot struct {
 	GoogleClient      *http.Client
 	SheetsMap         sheetsmap.SheetsMap
 	IntentRouter      IntentRouter
+}
+
+type GlipPostEventInfo struct {
+	PostEvent        *rc.GlipPostEvent
+	GroupMemberCount int64
+	CreatorInfo      *rc.GlipPersonInfo
 }
 
 func (bot *Groupbot) Initialize() (EventResponse, error) {
@@ -192,7 +195,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 		glipPostEvent.Type_ != "TextMessage" ||
 		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotId {
 
-		log.Info("E_NOT_PostAdded or TextMessage")
+		log.Info("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")
 		return &EventResponse{
 			StatusCode: http.StatusOK,
 			Message:    "200 Not a relevant post: Not PostAdded|PostChanged && TextMessage",
@@ -200,7 +203,10 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 	}
 
 	glipApiUtil := ru.GlipApiUtil{ApiClient: bot.RingCentralClient}
-	groupMemberCount, _ := glipApiUtil.GlipGroupMemberCount(glipPostEvent.GroupId)
+	groupMemberCount, err := glipApiUtil.GlipGroupMemberCount(glipPostEvent.GroupId)
+	if err != nil {
+		groupMemberCount = -1
+	}
 	log.Info(fmt.Sprintf("GROUP_MEMBER_COUNT [%v]", groupMemberCount))
 	atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwo(
 		bot.AppConfig.RingCentralBotId,
@@ -244,18 +250,29 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 
 	text := strings.TrimSpace(ru.StripAtMention(
 		bot.AppConfig.RingCentralBotId, glipPostEvent.Text))
-	//textLc := strings.ToLower(text)
 
-	//reqBody := rc.GlipCreatePost{}
-	//return EventResponse{}, nil
+	postEventInfo := GlipPostEventInfo{
+		PostEvent:        glipPostEvent,
+		GroupMemberCount: groupMemberCount,
+		CreatorInfo:      &creator,
+	}
 
-	evtResp, err := bot.IntentRouter.ProcessRequest(bot, text, glipPostEvent, &creator)
+	evtResp, err := bot.IntentRouter.ProcessRequest(bot, text, &postEventInfo)
 	return evtResp, err
 }
 
-func (bot *Groupbot) SendGlipPost(groupId string, reqBody rc.GlipCreatePost) (*EventResponse, error) {
+func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody rc.GlipCreatePost) (*EventResponse, error) {
+	if bot.AppConfig.GroupbotAutoAtMention && glipPostEventInfo.GroupMemberCount > 2 {
+		atMentionId := strings.TrimSpace(glipPostEventInfo.PostEvent.CreatorId)
+		if len(atMentionId) > 0 {
+			reqBody.Text = ru.AtMention(atMentionId) + " " + reqBody.Text
+		}
+	}
+
+	reqBody.Text = bot.AppConfig.AppendPostSuffix(reqBody.Text)
+
 	_, resp, err := bot.RingCentralClient.GlipApi.CreatePost(
-		context.Background(), groupId, reqBody,
+		context.Background(), glipPostEventInfo.PostEvent.GroupId, reqBody,
 	)
 	if err != nil {
 		msg := fmt.Errorf("Cannot Create Post: [%v]", err.Error())

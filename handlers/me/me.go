@@ -21,7 +21,8 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEvent *rc.GlipPostEvent, creator *rc.GlipPersonInfo) (*groupbot.EventResponse, error) {
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+	creator := glipPostEventInfo.CreatorInfo
 	name := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
 	email := creator.Email
 	log.Info(fmt.Sprintf("Poster [%v][%v]", name, email))
@@ -41,8 +42,8 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEvent *rc.GlipPostEvent, creat
 		bot.SheetsMap.SynchronizeItem(item)
 	}
 
-	glipPost := BuildPost(bot, fmt.Sprintf("Here's your info, %v", name), item, "")
-	return bot.SendGlipPost(glipPostEvent.GroupId, glipPost)
+	glipPost := BuildPost(bot, "Here's your info.", item, "")
+	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }
 
 func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, colName string) rc.GlipCreatePost {
@@ -50,16 +51,16 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 
 	numPrefixColumns := 2
 	haveItems := 0
+	missingItems := 0
 	color := htmlutil.Color2GreenHex
-	colNameLc := strings.ToLower(strings.TrimSpace(colName))
+	//colNameLc := strings.ToLower(strings.TrimSpace(colName))
 
 	for i, col := range bot.SheetsMap.Columns {
+		log.Info(fmt.Printf("ME_COL_NAME: %v\n", col.Value))
 		if i < numPrefixColumns {
 			continue
 		}
-		if len(colNameLc) > 0 && colNameLc != strings.ToLower(col.Value) {
-			continue
-		}
+		log.Info(fmt.Printf("ME_COL_NAME_ADD: %v\n", col.Value))
 
 		userValue := ""
 		if userValueTry, ok := item.Data[col.Value]; ok {
@@ -68,6 +69,9 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 
 		if len(userValue) > 0 {
 			haveItems += 1
+		} else {
+			missingItems += 1
+			userValue = "? (please set)"
 		}
 
 		bodyFields = append(bodyFields, rc.GlipMessageAttachmentFieldsInfo{
@@ -79,6 +83,11 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 		color = htmlutil.Color2RedHex
 	} else if haveItems < (len(bot.SheetsMap.Columns) - numPrefixColumns) {
 		color = htmlutil.Color2YellowHex
+	}
+	fmt.Printf("%v\n", bodyFields)
+
+	if missingItems > 0 {
+		postText += fmt.Sprintf(" Use `help` or `@%s help` for instructions on entering missing items.", bot.AppConfig.GroupbotName)
 	}
 	return rc.GlipCreatePost{
 		Text: postText,

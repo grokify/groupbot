@@ -17,8 +17,8 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEvent *rc.GlipPostEvent, creator *rc.GlipPersonInfo) (*groupbot.EventResponse, error) {
-	return bot.SendGlipPost(glipPostEvent.GroupId, buildPost(bot))
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+	return bot.SendGlipPost(glipPostEventInfo, buildPost(bot))
 }
 
 func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
