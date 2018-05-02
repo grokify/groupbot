@@ -7,6 +7,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral/client"
 	"github.com/grokify/gotilla/html/htmlutil"
+	"github.com/grokify/gotilla/strings/stringsutil"
 
 	"github.com/grokify/groupbot"
 )
@@ -96,6 +97,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 			reqBody.Attachments = append(reqBody.Attachments, attachment)
 		}
 	}
+
 	if len(reqBody.Attachments) > 0 {
 		enumsText := ""
 		if haveEnums {
@@ -103,10 +105,21 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 		}
 		exampleText := ""
 		if len(exampleKey) > 0 && len(exampleVal) > 0 {
-			exampleText = ", for example: `" + exampleKey + " " + exampleVal + "`"
+			exampleText = ", for example: " + bot.AppConfig.Quote(exampleKey+" "+exampleVal)
 		}
 
-		reqBody.Text = fmt.Sprintf("Hi there, I'm here to help you share some data. Here are some things you can do use me:\n\n* You can set the following fields: %s\n* To set a field, say `<field> <value>`%s.%s\n* Additional commands include `me`, `list`, `stats`, and `info`\n* If there are more than 2 people in our conversation, you will need to @ mention me", strings.Join(colNames, ", "), exampleText, enumsText)
+		reqBody.Text = fmt.Sprintf("Hi there, I'm here to help you share some data. Here are some things you can do use me:\n\n* You can set the following fields: %s\n* To set a field, say %s.%s\n* Additional commands include %s, %s, %s, and %s.\n* If there are more than 2 people in our conversation, you will need to @ mention me.",
+			strings.Join(
+				stringsutil.SliceCondenseAndQuoteSpace(
+					colNames,
+					bot.AppConfig.GroupbotCharQuoteLeft,
+					bot.AppConfig.GroupbotCharQuoteRight), ", "),
+			bot.AppConfig.Quote("<field> <value>")+exampleText,
+			enumsText,
+			bot.AppConfig.Quote("me"),
+			bot.AppConfig.Quote("list"),
+			bot.AppConfig.Quote("stats"),
+			bot.AppConfig.Quote("about"))
 	}
 	return reqBody
 }

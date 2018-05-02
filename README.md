@@ -22,14 +22,17 @@ GroupBot is a bot that allows you to share information about yourself with the t
 
 Set the following environment variables:
 
-* `GROUPBOT_ENGINE`            (`aws` or `nethttp`)
-* `GROUPBOT_PORT`              (for `net/http`)
-* `GOOGLE_SERVICE_ACCOUNT_JWT`
-* `GOOGLE_SHEET_INDEX`
-* `GOOGLE_SPREADSHEET_ID`
-* `RINGCENTRAL_BOT_ID`
-* `RINGCENTRAL_SERVER_URL`
-* `RINGCENTRAL_TOKEN_JSON`
+| Variable | Type | Required | Notes |
+|----------|------|----------|-------|
+| `GROUPBOT_ENGINE`            | string | y | `aws` or `nethttp` |
+| `GROUPBOT_PORT`              | integer | y | local port number for `net/http` |
+| `GROUPBOT_AUTO_AT_MENTION`   | boolean | y | |
+| `GOOGLE_SERVICE_ACCOUNT_JWT` | JSON string | y |  |
+| `GOOGLE_SPREADSHEET_ID`      | string | y | ID as in URL |
+| `GOOGLE_SHEET_INDEX`         | integer | y | sheet index, e.g. `0` |
+| `RINGCENTRAL_BOT_ID`         | string | y | bot `personId` in Glip |
+| `RINGCENTRAL_SERVER_URL`     | string | y | Base API URL, e.g. https://platform.ringcentral.com |
+| `RINGCENTRAL_TOKEN_JSON`     | JSON string | y | JSON token as returned by `/oauth/token` endpoint |
 
 ## Using the AWS Engine
 

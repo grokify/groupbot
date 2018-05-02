@@ -45,7 +45,10 @@ func BuildPost(bot *groupbot.Groupbot) (rc.GlipCreatePost, error) {
 		statsTextsString = header + "\n* " + strings.Join(statsTexts, "\n* ")
 	}
 
-	reqBody.Text = "Here's the current stats:"
+	reqBody.Text = fmt.Sprintf(
+		"Here's the current stats. Use %v to see a full list of users.",
+		bot.AppConfig.Quote("list"),
+	)
 	reqBody.Attachments = []rc.GlipMessageAttachmentInfoRequest{{
 		Type_: "Card",
 		Color: htmlutil.RingCentralOrangeHex,

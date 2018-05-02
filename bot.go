@@ -46,6 +46,8 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 			Message:    fmt.Sprintf("Initialize Error: Cannot Parse Config: %v", err.Error()),
 		}, err
 	}
+	appCfg.GroupbotCharQuoteLeft = CharQuoteLeft
+	appCfg.GroupbotCharQuoteRight = CharQuoteRight
 	bot.AppConfig = appCfg
 
 	log.Info(fmt.Sprintf("BOT_ID: %v", bot.AppConfig.RingCentralBotId))
