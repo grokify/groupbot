@@ -34,6 +34,13 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 	if err != nil {
 		return nil, err
 	}
+	if item.Display != name {
+		item.Display = name
+		err := bot.SheetsMap.SynchronizeItem(item)
+		if err != nil {
+			log.Info(fmt.Printf("SYNC_FAILED ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, creatorName))
+		}
+	}
 
 	//text := strings.TrimSpace(ru.StripAtMention(
 	//	bot.AppConfig.RingCentralBotId, glipPostEventInfo.PostEvent.Text))

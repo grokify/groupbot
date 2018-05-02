@@ -37,9 +37,14 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 			Message:    "500 " + msg.Error(),
 		}, err
 	}
+	log.Info(fmt.Printf("ME ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
 	if item.Display != name {
+		log.Info(fmt.Printf("SYNCING ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
 		item.Display = name
-		bot.SheetsMap.SynchronizeItem(item)
+		err := bot.SheetsMap.SynchronizeItem(item)
+		if err != nil {
+			log.Info(fmt.Printf("SYNC_FAILED ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
+		}
 	}
 
 	glipPost := BuildPost(bot, "Here's your info.", item, "")
