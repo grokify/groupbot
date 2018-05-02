@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -14,6 +15,7 @@ import (
 	ru "github.com/grokify/go-ringcentral/clientutil"
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
 	"github.com/grokify/gotilla/encoding/jsonutil"
+	"github.com/grokify/gotilla/strings/stringsutil"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -31,6 +33,7 @@ type GlipPostEventInfo struct {
 	PostEvent        *rc.GlipPostEvent
 	GroupMemberCount int64
 	CreatorInfo      *rc.GlipPersonInfo
+	TryCommandsLc    []string
 }
 
 func (bot *Groupbot) Initialize() (EventResponse, error) {
@@ -248,16 +251,24 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 	email := creator.Email
 	log.Info(fmt.Sprintf("Poster [%v][%v]", name, email))
 
-	text := strings.TrimSpace(ru.StripAtMention(
-		bot.AppConfig.RingCentralBotId, glipPostEvent.Text))
+	log.Info(fmt.Sprintf("TEXT_PREP [%v]", glipPostEvent.Text))
+	text := ru.StripAtMention(bot.AppConfig.RingCentralBotId, glipPostEvent.Text)
+	texts := regexp.MustCompile(`[,\n]`).Split(strings.ToLower(text), -1)
+	log.Info("TEXTS_1 " + jsonutil.MustMarshalString(texts, true))
+	log.Info("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceCondensePunctuation(texts), true))
+
+	//text = regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(glipPostEvent.Text, " ")
+	//text = strings.TrimSpace(regexp.MustCompile(`\s+`).ReplaceAllString(text, " "))
+	//log.Info(fmt.Sprintf("TEXT_POST [%v]", text))
 
 	postEventInfo := GlipPostEventInfo{
 		PostEvent:        glipPostEvent,
 		GroupMemberCount: groupMemberCount,
 		CreatorInfo:      &creator,
+		TryCommandsLc:    texts,
 	}
 
-	evtResp, err := bot.IntentRouter.ProcessRequest(bot, text, &postEventInfo)
+	evtResp, err := bot.IntentRouter.ProcessRequest(bot, &postEventInfo)
 	return evtResp, err
 }
 

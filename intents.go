@@ -4,6 +4,10 @@ import (
 	"encoding/json"
 	"regexp"
 	"strings"
+
+	"github.com/grokify/gotilla/encoding/jsonutil"
+	"github.com/grokify/gotilla/strings/stringsutil"
+	log "github.com/sirupsen/logrus"
 )
 
 type EventResponse struct {
@@ -31,7 +35,63 @@ func NewIntentRouter() IntentRouter {
 	return IntentRouter{Intents: []Intent{}}
 }
 
-func (ir *IntentRouter) ProcessRequest(bot *Groupbot, textNoBotMention string, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
+func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
+	//textNoBotMention = strings.TrimSpace(textNoBotMention)
+	//textNoBotMentionLc := strings.ToLower(textNoBotMention)
+
+	tryCmdsNotMatched := []string{}
+	intentResponses := []*EventResponse{}
+
+	tryCmdsLc = stringsutil.SliceCondenseRegexps(
+		glipPostEventInfo.TryCommandsLc,
+		[]*regexp.Regexp{
+			regexp.MustCompile(`[^a-zA-Z0-9]+`),
+			regexp.MustCompile(`\s+`)},
+		" ",
+	)
+
+	for _, tryCmdLc := range glipPostEventInfo.TryCommandsLc {
+		matched := false
+		for _, intent := range ir.Intents {
+			if intent.Type == MatchStringLowerCase {
+				for _, try := range intent.Strings {
+					if try == tryCmdLc {
+						matched = true
+						evtResp, err := intent.HandleIntent(bot, glipPostEventInfo)
+						if err == nil {
+							intentResponses = append(intentResponses, evtResp)
+						}
+					}
+				}
+			}
+		}
+		if !matched {
+			tryCmdsNotMatched = append(tryCmdsNotMatched, tryCmdLc)
+		}
+	}
+
+	tryCmdsNotMatched = stringsutil.SliceCondenseRegexps(
+		tryCmdsNotMatched,
+		[]*regexp.Regexp{
+			regexp.MustCompile(`[^a-zA-Z0-9]+`),
+			regexp.MustCompile(`\s+`)},
+		" ",
+	)
+
+	if len(tryCmdsNotMatched) > 0 {
+		log.Info("TRY_CMDS_NOT_MATCHED " + jsonutil.MustMarshalString(tryCmdsNotMatched, true))
+		glipPostEventInfo.TryCommandsLc = tryCmdsNotMatched
+		for _, intent := range ir.Intents {
+			if intent.Type == MatchAny {
+				return intent.HandleIntent(bot, glipPostEventInfo)
+			}
+		}
+	}
+
+	return &EventResponse{}, nil
+}
+
+func (ir *IntentRouter) ProcessRequestSingle(bot *Groupbot, textNoBotMention string, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
 	textNoBotMention = strings.TrimSpace(textNoBotMention)
 	textNoBotMentionLc := strings.ToLower(textNoBotMention)
 	for _, intent := range ir.Intents {

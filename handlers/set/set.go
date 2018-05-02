@@ -10,7 +10,7 @@ import (
 	rc "github.com/grokify/go-ringcentral/client"
 	ru "github.com/grokify/go-ringcentral/clientutil"
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
-	"github.com/grokify/gotilla/strings/stringsutil"
+	//"github.com/grokify/gotilla/strings/stringsutil"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -35,10 +35,10 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 		return nil, err
 	}
 
-	text := strings.TrimSpace(ru.StripAtMention(
-		bot.AppConfig.RingCentralBotId, glipPostEventInfo.PostEvent.Text))
-
-	texts := stringsutil.SplitCondenseSpace(text, ",")
+	//text := strings.TrimSpace(ru.StripAtMention(
+	//	bot.AppConfig.RingCentralBotId, glipPostEventInfo.PostEvent.Text))
+	//texts := stringsutil.SplitCondenseSpace(text, ",")
+	texts := glipPostEventInfo.TryCommandsLc
 
 	errorCount := 0
 	errorTexts := []string{}
