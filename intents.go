@@ -36,13 +36,11 @@ func NewIntentRouter() IntentRouter {
 }
 
 func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
-	//textNoBotMention = strings.TrimSpace(textNoBotMention)
-	//textNoBotMentionLc := strings.ToLower(textNoBotMention)
 
 	tryCmdsNotMatched := []string{}
 	intentResponses := []*EventResponse{}
 
-	tryCmdsLc = stringsutil.SliceCondenseRegexps(
+	tryCmdsLc := stringsutil.SliceCondenseRegexps(
 		glipPostEventInfo.TryCommandsLc,
 		[]*regexp.Regexp{
 			regexp.MustCompile(`[^a-zA-Z0-9]+`),
@@ -50,7 +48,7 @@ func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPos
 		" ",
 	)
 
-	for _, tryCmdLc := range glipPostEventInfo.TryCommandsLc {
+	for _, tryCmdLc := range tryCmdsLc {
 		matched := false
 		for _, intent := range ir.Intents {
 			if intent.Type == MatchStringLowerCase {

@@ -8,6 +8,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral/client"
 	"github.com/grokify/gotilla/html/htmlutil"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
 )
@@ -28,9 +29,11 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 	displayKeysLc := []string{}
 	keysMap := map[string]string{}
-	for _, item := range bot.SheetsMap.ItemMap {
-		displayKeyLc := fmt.Sprintf("%v %v", strings.ToLower(item.Display), rand.Int63())
+	for i, item := range bot.SheetsMap.ItemMap {
+		log.Warn(fmt.Sprintf("LIST_ITEM_I [%v][%v][%v]", i, item.Key, item.Display))
+		displayKeyLc := strings.TrimSpace(fmt.Sprintf("%v %v", strings.ToLower(item.ItemDisplayOrKey()), rand.Int63()))
 		displayKeysLc = append(displayKeysLc, displayKeyLc)
+
 		vals := []string{}
 		for _, col := range bot.SheetsMap.DataColumnsKeys() {
 			if itemVal, ok := item.Data[col]; ok {
@@ -44,11 +47,13 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 				vals = append(vals, "?")
 			}
 		}
-		itemString := item.Display + " - " + strings.Join(vals, ", ")
+		itemString := item.ItemDisplayOrKey() + " - " + strings.Join(vals, ", ")
 		keysMap[displayKeyLc] = itemString
 	}
 
+	log.Info(fmt.Sprintf("DISP_KEYS_1: %v", strings.Join(displayKeysLc, ", ")))
 	sort.Strings(displayKeysLc)
+	log.Info(fmt.Sprintf("DISP_KEYS_2: %v", strings.Join(displayKeysLc, ", ")))
 
 	outputs := []string{}
 
