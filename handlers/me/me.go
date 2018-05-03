@@ -28,7 +28,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 	log.Info(fmt.Sprintf("Poster [%v][%v]", name, email))
 
 	log.Info("INTENT [Me]")
-	item, err := bot.SheetsMap.GetItem(email)
+	item, err := bot.SheetsMap.GetOrCreateItemWithName(email, name)
 	if err != nil {
 		msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
 		log.Warn(msg.Error())
@@ -58,7 +58,6 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 	haveItems := 0
 	missingItems := 0
 	color := htmlutil.Color2GreenHex
-	//colNameLc := strings.ToLower(strings.TrimSpace(colName))
 
 	for i, col := range bot.SheetsMap.Columns {
 		log.Info(fmt.Printf("ME_COL_NAME: %v\n", col.Value))
@@ -92,8 +91,9 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 
 	if missingItems > 0 {
 		postText += fmt.Sprintf(
-			" Use `help` or `@%s help` for instructions on entering missing items.",
-			bot.AppConfig.RingCentralBotName)
+			" Use %s or %s for instructions on entering missing items.",
+			bot.AppConfig.Quote("help"),
+			bot.AppConfig.Quote(fmt.Sprintf("@%s help", bot.AppConfig.RingCentralBotName)))
 	}
 	return rc.GlipCreatePost{
 		Text: postText,

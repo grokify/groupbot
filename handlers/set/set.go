@@ -10,7 +10,6 @@ import (
 	rc "github.com/grokify/go-ringcentral/client"
 	ru "github.com/grokify/go-ringcentral/clientutil"
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
-	//"github.com/grokify/gotilla/strings/stringsutil"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -42,28 +41,25 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 		}
 	}
 
-	//text := strings.TrimSpace(ru.StripAtMention(
-	//	bot.AppConfig.RingCentralBotId, glipPostEventInfo.PostEvent.Text))
-	//texts := stringsutil.SplitCondenseSpace(text, ",")
 	texts := glipPostEventInfo.TryCommandsLc
 
 	errorCount := 0
 	errorTexts := []string{}
 	for _, text := range texts {
-		err := processText(bot, text, creator, item)
+		err := processText(bot, text, creator, &item)
 		if err != nil {
 			errorCount += 1
 			errorTexts = append(errorTexts, text)
 		}
 	}
 
-	if errorCount == len(texts) {
-		reqBody := rc.GlipCreatePost{
-			Text: "I couldn't understand you. Please type `help` to get more information on how I can help. Remember to @ mention me if our conversation has more than the two of us.",
-		}
-		return bot.SendGlipPost(glipPostEventInfo, reqBody)
-	} else if errorCount == 0 {
+	if errorCount == 0 {
 		reqBody := me.BuildPost(bot, "Thanks for updating your info. Here's your latest info:", item, "")
+		return bot.SendGlipPost(glipPostEventInfo, reqBody)
+	} else if errorCount == len(texts) {
+		reqBody := rc.GlipCreatePost{
+			Text: fmt.Sprintf("I couldn't understand you. Please type %s to get more information on how I can help. Remember to @ mention me (%s) if our conversation has more than the two of us.", bot.AppConfig.Quote("help"), bot.AppConfig.Quote("@"+bot.AppConfig.RingCentralBotName)),
+		}
 		return bot.SendGlipPost(glipPostEventInfo, reqBody)
 	}
 	errorTextsStr := strings.Join(errorTexts, ", ")
@@ -75,7 +71,7 @@ func TrimSpaceToLower(s string) string {
 	return strings.ToLower(strings.TrimSpace(s))
 }
 
-func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo, item sheetsmap.Item) error {
+func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo, item *sheetsmap.Item) error {
 
 	email := creator.Email
 	userText = regexp.MustCompile(`(?i)^\s*set\s+`).ReplaceAllString(userText, "")
@@ -143,12 +139,12 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 
 	_, err = bot.SheetsMap.SetItemKeyString(email, text)
 	if err != nil {
-		msg := fmt.Errorf("E_CANNOT_ADD_TO_SHEET: KEY[%v] VAL[%v]", email, text)
+		msg := fmt.Errorf("E_CANNOT_ADD_TO_SHEET: KEY[%s] VAL[%s]", email, text)
 		log.Warn(msg.Error())
 
 		reqBody := rc.GlipCreatePost{
-			Text: "I couldn't understand you. Please type `help` to get more information on how I can help. Remember to @ mention me if our conversation has more than the two of us.",
-		}
+			Text: fmt.Sprintf("I couldn't understand you. Please type %s to get more information on how I can help. Remember to @ mention me if our conversation has more than the two of us.", bot.AppConfig.Quote("help"))}
+
 		return bot.SendGlipPost(glipPostEventInfo, reqBody)
 	}
 
