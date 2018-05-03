@@ -26,11 +26,13 @@ Set the following environment variables:
 |----------|------|----------|-------|
 | `GROUPBOT_ENGINE`            | string | y | `aws` or `nethttp` |
 | `GROUPBOT_PORT`              | integer | y | local port number for `net/http` |
-| `GROUPBOT_AUTO_AT_MENTION`   | boolean | y | |
+| `GROUPBOT_REQUEST_FUZZY_AT_MENTION_MATCH` | boolean | y | Match non-completed at mentions. |
+| `GROUPBOT_RESPONSE_AUTO_AT_MENTION`   | boolean | y | |
 | `GOOGLE_SERVICE_ACCOUNT_JWT` | JSON string | y |  |
 | `GOOGLE_SPREADSHEET_ID`      | string | y | ID as in URL |
 | `GOOGLE_SHEET_INDEX`         | integer | y | sheet index, e.g. `0` |
 | `RINGCENTRAL_BOT_ID`         | string | y | bot `personId` in Glip |
+| `RINGCENTRAL_BOT_NAME`       | string | y | bot name in Glip for fuzzy at matching |
 | `RINGCENTRAL_SERVER_URL`     | string | y | Base API URL, e.g. https://platform.ringcentral.com |
 | `RINGCENTRAL_TOKEN_JSON`     | JSON string | y | JSON token as returned by `/oauth/token` endpoint |
 
