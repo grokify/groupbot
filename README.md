@@ -25,9 +25,9 @@ Set the following environment variables:
 | Variable | Type | Required | Notes |
 |----------|------|----------|-------|
 | `GROUPBOT_ENGINE`            | string | y | `aws` or `nethttp` |
-| `GROUPBOT_PORT`              | integer | y | local port number for `net/http` |
-| `GROUPBOT_REQUEST_FUZZY_AT_MENTION_MATCH` | boolean | y | Match non-completed at mentions. |
-| `GROUPBOT_RESPONSE_AUTO_AT_MENTION`   | boolean | y | |
+| `GROUPBOT_PORT`              | integer | n | local port number for `net/http` |
+| `GROUPBOT_REQUEST_FUZZY_AT_MENTION_MATCH` | boolean | n | Match non-completed at mentions. |
+| `GROUPBOT_RESPONSE_AUTO_AT_MENTION`   | boolean | n | |
 | `GOOGLE_SERVICE_ACCOUNT_JWT` | JSON string | y |  |
 | `GOOGLE_SPREADSHEET_ID`      | string | y | ID as in URL |
 | `GOOGLE_SHEET_INDEX`         | integer | y | sheet index, e.g. `0` |
