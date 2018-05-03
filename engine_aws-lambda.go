@@ -20,14 +20,12 @@ func HandleAwsLambda(req events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	log.Info("HandleAwsLambda_S1")
 	log.Info(fmt.Sprintf("HandleAwsLambda_S2_req_body: %v", req.Body))
 
-	if val, ok := req.Headers[ValidationTokenHeader]; ok {
-		if len(val) > 0 {
-			return events.APIGatewayProxyResponse{
-				StatusCode: 200,
-				Headers:    map[string]string{ValidationTokenHeader: val},
-				Body:       `{"statusCode":200}`,
-			}, nil
-		}
+	if val, ok := req.Headers[ValidationTokenHeader]; ok && len(val) > 0 {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 200,
+			Headers:    map[string]string{ValidationTokenHeader: val},
+			Body:       `{"statusCode":200}`,
+		}, nil
 	}
 
 	bot := Groupbot{IntentRouter: intentRouter_}

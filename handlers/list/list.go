@@ -68,12 +68,9 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 	return rc.GlipCreatePost{
 		Text: fmt.Sprintf(
 			"Here's the current data. Use %s to see overall stats.",
-			bot.AppConfig.Quote("stats"),
-		),
+			bot.AppConfig.Quote("stats")),
 		Attachments: []rc.GlipMessageAttachmentInfoRequest{{
 			Type_: "Card",
 			Color: htmlutil.RingCentralOrangeHex,
-			Text:  outputsString,
-		}},
-	}
+			Text:  outputsString}}}
 }

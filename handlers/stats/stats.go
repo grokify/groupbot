@@ -38,6 +38,7 @@ func BuildPost(bot *groupbot.Groupbot) (rc.GlipCreatePost, error) {
 		statsText := fmt.Sprintf("%v - %s", stat.Count, stat.Name)
 		statsTexts = append(statsTexts, statsText)
 	}
+
 	statsTextsString := ""
 	if len(statsTexts) > 0 {
 		colKeys := bot.SheetsMap.DataColumnsKeys()
@@ -47,13 +48,12 @@ func BuildPost(bot *groupbot.Groupbot) (rc.GlipCreatePost, error) {
 
 	reqBody.Text = fmt.Sprintf(
 		"Here's the current stats. Use %v to see a full list of users.",
-		bot.AppConfig.Quote("list"),
-	)
+		bot.AppConfig.Quote("list"))
+
 	reqBody.Attachments = []rc.GlipMessageAttachmentInfoRequest{{
 		Type_: "Card",
 		Color: htmlutil.RingCentralOrangeHex,
-		Text:  statsTextsString,
-	}}
+		Text:  statsTextsString}}
 
 	return reqBody, nil
 }

@@ -81,8 +81,7 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 
 		bodyFields = append(bodyFields, rc.GlipMessageAttachmentFieldsInfo{
 			Title: col.Value,
-			Value: userValue,
-		})
+			Value: userValue})
 	}
 	if haveItems == 0 {
 		color = htmlutil.Color2RedHex
@@ -92,7 +91,9 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 	fmt.Printf("%v\n", bodyFields)
 
 	if missingItems > 0 {
-		postText += fmt.Sprintf(" Use `help` or `@%s help` for instructions on entering missing items.", bot.AppConfig.GroupbotName)
+		postText += fmt.Sprintf(
+			" Use `help` or `@%s help` for instructions on entering missing items.",
+			bot.AppConfig.RingCentralBotName)
 	}
 	return rc.GlipCreatePost{
 		Text: postText,
