@@ -220,20 +220,12 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 		FuzzyAtMention: bot.AppConfig.GroupbotRequestFuzzyAtMentionMatch,
 		AtMentions:     glipPostEvent.Mentions,
 		GroupId:        glipPostEvent.GroupId,
-		TextRaw:        glipPostEvent.Text,
-	}
+		TextRaw:        glipPostEvent.Text}
+
 	log.Info("AT_MENTION_INPUT: " + string(jsonutil.MustMarshal(info, true)))
 	log.Info("CONFIG: " + string(jsonutil.MustMarshal(bot.AppConfig, true)))
 
 	atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwoFuzzy(info)
-
-	/*
-		atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwo(
-			bot.AppConfig.RingCentralBotId,
-			bot.AppConfig.RingCentralBotName,
-			bot.AppConfig.GroupbotRequestFuzzyAtMentionMatch,
-			glipPostEvent.GroupId,
-			glipPostEvent.Mentions)*/
 
 	if err != nil {
 		log.Info("AT_MENTION_ERR: " + err.Error())
@@ -257,15 +249,13 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 		log.Warn(msg.Error())
 		return &EventResponse{
 			StatusCode: http.StatusInternalServerError,
-			Message:    msg.Error(),
-		}, err
+			Message:    msg.Error()}, err
 	} else if resp.StatusCode >= 300 {
 		msg := fmt.Errorf("Glip API Status Error: %v", resp.StatusCode)
 		log.Warn(msg.Error())
 		return &EventResponse{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "500 " + msg.Error(),
-		}, err
+			Message:    "500 " + msg.Error()}, err
 	}
 
 	name := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
@@ -281,27 +271,20 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 	log.Info("TEXTS_1 " + jsonutil.MustMarshalString(texts, true))
 	log.Info("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceCondensePunctuation(texts), true))
 
-	//text = regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(glipPostEvent.Text, " ")
-	//text = strings.TrimSpace(regexp.MustCompile(`\s+`).ReplaceAllString(text, " "))
-	//log.Info(fmt.Sprintf("TEXT_POST [%v]", text))
-
 	postEventInfo := GlipPostEventInfo{
 		PostEvent:        glipPostEvent,
 		GroupMemberCount: groupMemberCount,
 		CreatorInfo:      &creator,
-		TryCommandsLc:    texts,
-	}
+		TryCommandsLc:    texts}
 
 	evtResp, err := bot.IntentRouter.ProcessRequest(bot, &postEventInfo)
 	return evtResp, err
 }
 
 func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody rc.GlipCreatePost) (*EventResponse, error) {
-	if bot.AppConfig.GroupbotResponseAutoAtMentionResponse && glipPostEventInfo.GroupMemberCount > 2 {
+	if bot.AppConfig.GroupbotResponseAutoAtMention && glipPostEventInfo.GroupMemberCount > 2 {
 		atMentionId := strings.TrimSpace(glipPostEventInfo.PostEvent.CreatorId)
-		if len(atMentionId) > 0 {
-			reqBody.Text = ru.AtMention(atMentionId) + " " + reqBody.Text
-		}
+		reqBody.Text = ru.PrefixAtMentionUnlessMentioned(atMentionId, reqBody.Text)
 	}
 
 	reqBody.Text = bot.AppConfig.AppendPostSuffix(reqBody.Text)
