@@ -20,19 +20,20 @@ const (
 )
 
 type AppConfig struct {
-	Port                   int64  `env:"GROUPBOT_PORT"`
-	GroupbotName           string `env:"GROUPBOT_NAME"`
-	GroupbotAutoAtMention  bool   `env:"GROUPBOT_AUTO_AT_MENTION"`
-	GroupbotPostSuffix     string `env:"GROUPBOT_POST_SUFFIX"`
-	GroupbotCharQuoteLeft  string `env:"GROUPBOT_CHAR_QUOTE_LEFT"`
-	GroupbotCharQuoteRight string `env:"GROUPBOT_CHAR_QUOTE_RIGHT"`
-	RingCentralTokenJSON   string `env:"RINGCENTRAL_TOKEN_JSON"`
-	RingCentralServerURL   string `env:"RINGCENTRAL_SERVER_URL"`
-	RingCentralWebhookURL  string `env:"RINGCENTRAL_WEBHOOK_URL"`
-	RingCentralBotId       string `env:"RINGCENTRAL_BOT_ID"`
-	GoogleSvcAccountJWT    string `env:"GOOGLE_SERVICE_ACCOUNT_JWT"`
-	GoogleSpreadsheetId    string `env:"GOOGLE_SPREADSHEET_ID"`
-	GoogleSheetIndex       int64  `env:"GOOGLE_SHEET_INDEX"`
+	Port                                  int64  `env:"GROUPBOT_PORT"`
+	GroupbotRequestFuzzyAtMentionMatch    bool   `env:"GROUPBOT_REQUEST_FUZZY_AT_MENTION_MATCH"`
+	GroupbotResponseAutoAtMentionResponse bool   `env:"GROUPBOT_RESPONSE_AUTO_AT_MENTION"`
+	GroupbotPostSuffix                    string `env:"GROUPBOT_POST_SUFFIX"`
+	GroupbotCharQuoteLeft                 string `env:"GROUPBOT_CHAR_QUOTE_LEFT"`
+	GroupbotCharQuoteRight                string `env:"GROUPBOT_CHAR_QUOTE_RIGHT"`
+	RingCentralTokenJSON                  string `env:"RINGCENTRAL_TOKEN_JSON"`
+	RingCentralServerURL                  string `env:"RINGCENTRAL_SERVER_URL"`
+	RingCentralWebhookURL                 string `env:"RINGCENTRAL_WEBHOOK_URL"`
+	RingCentralBotId                      string `env:"RINGCENTRAL_BOT_ID"`
+	RingCentralBotName                    string `env:"RINGCENTRAL_BOT_NAME"`
+	GoogleSvcAccountJWT                   string `env:"GOOGLE_SERVICE_ACCOUNT_JWT"`
+	GoogleSpreadsheetId                   string `env:"GOOGLE_SPREADSHEET_ID"`
+	GoogleSheetIndex                      int64  `env:"GOOGLE_SHEET_INDEX"`
 }
 
 func (ac *AppConfig) AppendPostSuffix(s string) string {

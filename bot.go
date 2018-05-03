@@ -213,11 +213,30 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 		groupMemberCount = -1
 	}
 	log.Info(fmt.Sprintf("GROUP_MEMBER_COUNT [%v]", groupMemberCount))
-	atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwo(
-		bot.AppConfig.RingCentralBotId,
-		glipPostEvent.GroupId,
-		glipPostEvent.Mentions)
+
+	info := ru.GlipInfoAtMentionOrGroupOfTwoInfo{
+		PersonId:       bot.AppConfig.RingCentralBotId,
+		PersonName:     bot.AppConfig.RingCentralBotName,
+		FuzzyAtMention: bot.AppConfig.GroupbotRequestFuzzyAtMentionMatch,
+		AtMentions:     glipPostEvent.Mentions,
+		GroupId:        glipPostEvent.GroupId,
+		TextRaw:        glipPostEvent.Text,
+	}
+	log.Info("AT_MENTION_INPUT: " + string(jsonutil.MustMarshal(info, true)))
+	log.Info("CONFIG: " + string(jsonutil.MustMarshal(bot.AppConfig, true)))
+
+	atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwoFuzzy(info)
+
+	/*
+		atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwo(
+			bot.AppConfig.RingCentralBotId,
+			bot.AppConfig.RingCentralBotName,
+			bot.AppConfig.GroupbotRequestFuzzyAtMentionMatch,
+			glipPostEvent.GroupId,
+			glipPostEvent.Mentions)*/
+
 	if err != nil {
+		log.Info("AT_MENTION_ERR: " + err.Error())
 		return &EventResponse{
 			StatusCode: http.StatusBadRequest,
 			Message:    "500 AtMentionedOrGroupOfTwo error",
@@ -255,6 +274,9 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 
 	log.Info(fmt.Sprintf("TEXT_PREP [%v]", glipPostEvent.Text))
 	text := ru.StripAtMention(bot.AppConfig.RingCentralBotId, glipPostEvent.Text)
+	text = ru.StripAtMentionAll(bot.AppConfig.RingCentralBotId,
+		bot.AppConfig.RingCentralBotName,
+		glipPostEvent.Text)
 	texts := regexp.MustCompile(`[,\n]`).Split(strings.ToLower(text), -1)
 	log.Info("TEXTS_1 " + jsonutil.MustMarshalString(texts, true))
 	log.Info("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceCondensePunctuation(texts), true))
@@ -275,7 +297,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 }
 
 func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody rc.GlipCreatePost) (*EventResponse, error) {
-	if bot.AppConfig.GroupbotAutoAtMention && glipPostEventInfo.GroupMemberCount > 2 {
+	if bot.AppConfig.GroupbotResponseAutoAtMentionResponse && glipPostEventInfo.GroupMemberCount > 2 {
 		atMentionId := strings.TrimSpace(glipPostEventInfo.PostEvent.CreatorId)
 		if len(atMentionId) > 0 {
 			reqBody.Text = ru.AtMention(atMentionId) + " " + reqBody.Text
