@@ -47,8 +47,13 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 		}
 	}
 
-	glipPost := BuildPost(bot, "Here's your info.", item, "")
+	//glipPost := BuildPost(bot, "Here's your info.", item, "")
+	glipPost := BuildPostMe(bot, item)
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
+}
+
+func BuildPostMe(bot *groupbot.Groupbot, item sheetsmap.Item) rc.GlipCreatePost {
+	return BuildPost(bot, "Here's your info.", item, "")
 }
 
 func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, colName string) rc.GlipCreatePost {

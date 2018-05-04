@@ -24,7 +24,6 @@ func NewIntent() groupbot.Intent {
 }
 
 func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
-
 	creator := glipPostEventInfo.CreatorInfo
 	creatorName := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
 	creatorEmail := creator.Email
@@ -44,18 +43,27 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 	texts := glipPostEventInfo.TryCommandsLc
 
 	errorCount := 0
+	updateCount := 0
 	errorTexts := []string{}
 	for _, text := range texts {
-		err := processText(bot, text, creator, &item)
+		updated, err := processText(bot, text, creator, &item)
 		if err != nil {
 			errorCount += 1
 			errorTexts = append(errorTexts, text)
 		}
+		if updated {
+			updateCount += 1
+		}
 	}
 
 	if errorCount == 0 {
-		reqBody := me.BuildPost(bot, "Thanks for updating your info. Here's your latest info:", item, "")
-		return bot.SendGlipPost(glipPostEventInfo, reqBody)
+		if updateCount > 0 {
+			reqBody := me.BuildPost(bot, "Thanks for updating your info. Here's your latest info:", item, "")
+			return bot.SendGlipPost(glipPostEventInfo, reqBody)
+		} else {
+			reqBody := me.BuildPostMe(bot, item)
+			return bot.SendGlipPost(glipPostEventInfo, reqBody)
+		}
 	} else if errorCount == len(texts) {
 		reqBody := rc.GlipCreatePost{
 			Text: fmt.Sprintf("I couldn't understand you. Please type %s to get more information on how I can help. Remember to @ mention me (%s) if our conversation has more than the two of us.", bot.AppConfig.Quote("help"), bot.AppConfig.Quote("@"+bot.AppConfig.RingCentralBotName)),
@@ -71,7 +79,7 @@ func TrimSpaceToLower(s string) string {
 	return strings.ToLower(strings.TrimSpace(s))
 }
 
-func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo, item *sheetsmap.Item) error {
+func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo, item *sheetsmap.Item) (bool, error) {
 	email := creator.Email
 	userText = regexp.MustCompile(`(?i)^\s*set\s+`).ReplaceAllString(userText, "")
 	userText = regexp.MustCompile(`\s*=\s*`).ReplaceAllString(userText, " ")
@@ -80,11 +88,11 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 
 	for _, col := range bot.SheetsMap.Columns {
 		if textLc == TrimSpaceToLower(col.Name) {
-			return nil
+			return false, nil
 		}
 		for _, colAlias := range col.NameAliases {
 			if textLc == TrimSpaceToLower(colAlias) {
-				return nil
+				return false, nil
 			}
 		}
 	}
@@ -93,9 +101,9 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 	if err != nil {
 		msg := fmt.Errorf("E_CANNOT_ADD_TO_SHEET: USER_KEY[%v] TEXT_VAL[%v]", email, userText)
 		log.Warn(msg.Error())
-		return errors.New("Cannot Understand")
+		return false, errors.New("Cannot Understand")
 	}
-	return nil
+	return true, nil
 }
 
 func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
@@ -111,22 +119,30 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 	log.Info("INTENT [Set]")
 
 	for _, col := range bot.SheetsMap.Columns {
-		if textLc == strings.ToLower(col.Name) {
-			item, err := bot.SheetsMap.GetItem(email)
-			if err != nil {
-				msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
-				log.Warn(msg.Error())
-				return &groupbot.EventResponse{
-					StatusCode: http.StatusInternalServerError,
-					Message:    "500 " + msg.Error(),
-				}, err
+		for i := 0; i < len(col.NameAliases)+1; i++ {
+			colNameTry := ""
+			if i == 0 {
+				colNameTry = strings.ToLower(col.Name)
+			} else {
+				colNameTry = strings.ToLower(col.NameAliases[i-1])
 			}
-			if item.Display != name {
-				item.Display = name
-				bot.SheetsMap.SynchronizeItem(item)
+			if textLc == colNameTry {
+				item, err := bot.SheetsMap.GetItem(email)
+				if err != nil {
+					msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
+					log.Warn(msg.Error())
+					return &groupbot.EventResponse{
+						StatusCode: http.StatusInternalServerError,
+						Message:    "500 " + msg.Error(),
+					}, err
+				}
+				if item.Display != name {
+					item.Display = name
+					bot.SheetsMap.SynchronizeItem(item)
+				}
+				reqBody := me.BuildPost(bot, fmt.Sprintf("Here's your info, %v. Use `me` to see all your data.", name), item, col.Name)
+				return bot.SendGlipPost(glipPostEventInfo, reqBody)
 			}
-			reqBody := me.BuildPost(bot, fmt.Sprintf("Here's your info, %v. Use `me` to see all your data.", name), item, col.Name)
-			return bot.SendGlipPost(glipPostEventInfo, reqBody)
 		}
 	}
 
