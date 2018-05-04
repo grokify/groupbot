@@ -36,9 +36,7 @@ func main() {
 			list.NewIntent(),
 			me.NewIntent(),
 			stats.NewIntent(),
-			set.NewIntent(), // Default
-		},
-	}
+			set.NewIntent()}} // Default
 
 	// Run engine
 	switch engine {
