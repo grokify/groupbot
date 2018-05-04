@@ -40,11 +40,13 @@ func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPos
 	tryCmdsNotMatched := []string{}
 	intentResponses := []*EventResponse{}
 
+	regexps := []*regexp.Regexp{
+		regexp.MustCompile(`[^a-zA-Z0-9\-]+`),
+		regexp.MustCompile(`\s+`)}
+
 	tryCmdsLc := stringsutil.SliceCondenseRegexps(
 		glipPostEventInfo.TryCommandsLc,
-		[]*regexp.Regexp{
-			regexp.MustCompile(`[^a-zA-Z0-9]+`),
-			regexp.MustCompile(`\s+`)},
+		regexps,
 		" ",
 	)
 
@@ -70,9 +72,7 @@ func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPos
 
 	tryCmdsNotMatched = stringsutil.SliceCondenseRegexps(
 		tryCmdsNotMatched,
-		[]*regexp.Regexp{
-			regexp.MustCompile(`[^a-zA-Z0-9]+`),
-			regexp.MustCompile(`\s+`)},
+		regexps,
 		" ",
 	)
 
