@@ -72,7 +72,6 @@ func TrimSpaceToLower(s string) string {
 }
 
 func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo, item *sheetsmap.Item) error {
-
 	email := creator.Email
 	userText = regexp.MustCompile(`(?i)^\s*set\s+`).ReplaceAllString(userText, "")
 	userText = regexp.MustCompile(`\s*=\s*`).ReplaceAllString(userText, " ")
@@ -80,8 +79,13 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 	textLc := TrimSpaceToLower(userText)
 
 	for _, col := range bot.SheetsMap.Columns {
-		if textLc == TrimSpaceToLower(col.Value) {
+		if textLc == TrimSpaceToLower(col.Name) {
 			return nil
+		}
+		for _, colAlias := range col.NameAliases {
+			if textLc == TrimSpaceToLower(colAlias) {
+				return nil
+			}
 		}
 	}
 
@@ -107,7 +111,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 	log.Info("INTENT [Set]")
 
 	for _, col := range bot.SheetsMap.Columns {
-		if textLc == strings.ToLower(col.Value) {
+		if textLc == strings.ToLower(col.Name) {
 			item, err := bot.SheetsMap.GetItem(email)
 			if err != nil {
 				msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
@@ -121,7 +125,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 				item.Display = name
 				bot.SheetsMap.SynchronizeItem(item)
 			}
-			reqBody := me.BuildPost(bot, fmt.Sprintf("Here's your info, %v. Use `me` to see all your data.", name), item, col.Value)
+			reqBody := me.BuildPost(bot, fmt.Sprintf("Here's your info, %v. Use `me` to see all your data.", name), item, col.Name)
 			return bot.SendGlipPost(glipPostEventInfo, reqBody)
 		}
 	}

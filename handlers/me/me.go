@@ -60,14 +60,14 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 	color := htmlutil.Color2GreenHex
 
 	for i, col := range bot.SheetsMap.Columns {
-		log.Info(fmt.Printf("ME_COL_NAME: %v\n", col.Value))
+		log.Info(fmt.Printf("ME_COL_NAME: %v\n", col.Name))
 		if i < numPrefixColumns {
 			continue
 		}
-		log.Info(fmt.Printf("ME_COL_NAME_ADD: %v\n", col.Value))
+		log.Info(fmt.Printf("ME_COL_NAME_ADD: %v\n", col.Name))
 
 		userValue := ""
-		if userValueTry, ok := item.Data[col.Value]; ok {
+		if userValueTry, ok := item.Data[col.Name]; ok {
 			userValue = strings.TrimSpace(userValueTry)
 		}
 
@@ -79,7 +79,7 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 		}
 
 		bodyFields = append(bodyFields, rc.GlipMessageAttachmentFieldsInfo{
-			Title: col.Value,
+			Title: col.Name,
 			Value: userValue})
 	}
 	if haveItems == 0 {

@@ -3,6 +3,7 @@ package help
 import (
 	"fmt"
 	"math"
+	"regexp"
 	"strings"
 
 	rc "github.com/grokify/go-ringcentral/client"
@@ -37,6 +38,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 		if i < 2 {
 			continue
 		}
+		colNames = append(colNames, col.Name)
 
 		attachment := rc.GlipMessageAttachmentInfoRequest{
 			Type_:  "Card",
@@ -46,13 +48,13 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 		attachment.Fields = append(attachment.Fields,
 			rc.GlipMessageAttachmentFieldsInfo{
 				Title: "Field",
-				Value: col.Value,
+				Value: col.Name,
 				Style: "Short",
 			})
 		if len(exampleKey) == 0 {
-			exampleKey = col.Value
+			exampleKey = col.Name
 		}
-		colNames = append(colNames, col.Value)
+
 		if len(col.Enums) > 0 {
 			haveEnums = true
 			options := []string{}
@@ -87,6 +89,15 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 					})
 			}
 		}
+		for _, infoURL := range col.InfoURLs {
+			attachment.Fields = append(attachment.Fields,
+				rc.GlipMessageAttachmentFieldsInfo{
+					Title: infoURL.Text,
+					Value: UrlToMarkdownLinkHostname(infoURL.URL),
+					Style: "Short",
+				})
+		}
+
 		if len(attachment.Fields) > 0 {
 			mod := math.Mod(float64(len(reqBody.Attachments)), 2)
 			if mod == 0 {
@@ -122,4 +133,17 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 			bot.AppConfig.Quote("about"))
 	}
 	return reqBody
+}
+
+func UrlToMarkdownLinkHostname(url string) string {
+	rx := regexp.MustCompile(`(?i)^https?://([^/]+)(/[^/])`)
+	m := rx.FindStringSubmatch(url)
+	if len(m) > 1 {
+		suffix := ""
+		if len(m) > 2 {
+			suffix = "..."
+		}
+		return fmt.Sprintf("[%v%v](%v)", m[1], suffix, url)
+	}
+	return url
 }
