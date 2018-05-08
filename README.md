@@ -24,17 +24,18 @@ Set the following environment variables:
 
 | Variable | Type | Required | Notes |
 |----------|------|----------|-------|
-| `GROUPBOT_ENGINE`            | string | y | `aws` or `nethttp` |
-| `GROUPBOT_PORT`              | integer | n | local port number for `net/http` |
+| `GROUPBOT_ENGINE`             | string | y | `aws` or `nethttp` |
+| `GROUPBOT_PORT`               | integer | n | local port number for `net/http` |
 | `GROUPBOT_REQUEST_FUZZY_AT_MENTION_MATCH` | boolean | n | Match non-completed at mentions. |
 | `GROUPBOT_RESPONSE_AUTO_AT_MENTION`   | boolean | n | |
-| `GOOGLE_SERVICE_ACCOUNT_JWT` | JSON string | y |  |
-| `GOOGLE_SPREADSHEET_ID`      | string | y | ID as in URL |
-| `GOOGLE_SHEET_INDEX`         | integer | y | sheet index, e.g. `0` |
-| `RINGCENTRAL_BOT_ID`         | string | y | bot `personId` in Glip |
-| `RINGCENTRAL_BOT_NAME`       | string | y | bot name in Glip for fuzzy at matching |
-| `RINGCENTRAL_SERVER_URL`     | string | y | Base API URL, e.g. https://platform.ringcentral.com |
-| `RINGCENTRAL_TOKEN_JSON`     | JSON string | y | JSON token as returned by `/oauth/token` endpoint |
+| `GOOGLE_SERVICE_ACCOUNT_JWT`  | JSON string | y |  |
+| `GOOGLE_SPREADSHEET_ID`       | string | y | ID as in URL |
+| `GOOGLE_SHEET_TITLE_RECORDS`  | string | y | sheet title for data records, e.g. `Records` |
+| `GOOGLE_SHEET_TITLE_METADATA` | string | y | sheet title for metadata, e.g. `Metadata` |
+| `RINGCENTRAL_BOT_ID`          | string | y | bot `personId` in Glip |
+| `RINGCENTRAL_BOT_NAME`        | string | y | bot name in Glip for fuzzy at matching |
+| `RINGCENTRAL_SERVER_URL`      | string | y | Base API URL, e.g. https://platform.ringcentral.com |
+| `RINGCENTRAL_TOKEN_JSON`      | JSON string | y | JSON token as returned by `/oauth/token` endpoint |
 
 ## Using the AWS Engine
 
