@@ -33,7 +33,8 @@ type AppConfig struct {
 	RingCentralBotName                 string `env:"RINGCENTRAL_BOT_NAME"`
 	GoogleSvcAccountJWT                string `env:"GOOGLE_SERVICE_ACCOUNT_JWT"`
 	GoogleSpreadsheetId                string `env:"GOOGLE_SPREADSHEET_ID"`
-	GoogleSheetIndex                   int64  `env:"GOOGLE_SHEET_INDEX"`
+	GoogleSheetTitleRecords            string `env:"GOOGLE_SHEET_TITLE_RECORDS"`
+	GoogleSheetTitleMetadata           string `env:"GOOGLE_SHEET_TITLE_METADATA"`
 }
 
 func (ac *AppConfig) AppendPostSuffix(s string) string {
@@ -86,12 +87,8 @@ func GetGoogleApiClient(appConfig AppConfig) (*http.Client, error) {
 		sheets.SpreadsheetsScope)
 }
 
-func GetSheetsMap(googClient *http.Client, appConfig AppConfig) (sheetsmap.SheetsMap, error) {
-	sm, err := sheetsmap.NewSheetsMap(
-		googClient,
-		appConfig.GoogleSpreadsheetId,
-		uint(appConfig.GoogleSheetIndex),
-	)
+func GetSheetsMap(googClient *http.Client, spreadsheetId string, sheetTitle string) (sheetsmap.SheetsMap, error) {
+	sm, err := sheetsmap.NewSheetsMapTitle(googClient, spreadsheetId, sheetTitle)
 	if err != nil {
 		return sm, err
 	}

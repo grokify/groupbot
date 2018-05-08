@@ -26,6 +26,7 @@ type Groupbot struct {
 	RingCentralClient *rc.APIClient
 	GoogleClient      *http.Client
 	SheetsMap         sheetsmap.SheetsMap
+	SheetsMapMeta     sheetsmap.SheetsMap
 	IntentRouter      IntentRouter
 }
 
@@ -72,7 +73,9 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 	}
 	bot.GoogleClient = googHttpClient
 
-	sm, err := GetSheetsMap(googHttpClient, appCfg)
+	sm, err := GetSheetsMap(googHttpClient,
+		bot.AppConfig.GoogleSpreadsheetId,
+		bot.AppConfig.GoogleSheetTitleRecords)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
 		return EventResponse{
@@ -81,6 +84,18 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 		}, err
 	}
 	bot.SheetsMap = sm
+
+	sm2, err := GetSheetsMap(googHttpClient,
+		bot.AppConfig.GoogleSpreadsheetId,
+		bot.AppConfig.GoogleSheetTitleMetadata)
+	if err != nil {
+		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
+		return EventResponse{
+			StatusCode: 500,
+			Message:    fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()),
+		}, err
+	}
+	bot.SheetsMapMeta = sm2
 
 	return EventResponse{
 		StatusCode: 200,
@@ -109,10 +124,14 @@ func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.
 	if err != nil {
 		body := `{"statusCode":500,"body":"Cannot initialize."}`
 		log.Info(body)
+		evtResp := EventResponse{
+			StatusCode: 500,
+			Message:    "Cannot initialize: " + err.Error(),
+		}
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusOK,
 			Headers:    map[string]string{},
-			Body:       `{"statusCode":500,"body":"Cannot initialize."}`,
+			Body:       string(evtResp.ToJson()),
 		}, nil
 	}
 

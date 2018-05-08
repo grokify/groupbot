@@ -16,7 +16,7 @@ import (
 func NewIntent() groupbot.Intent {
 	return groupbot.Intent{
 		Type:         groupbot.MatchStringLowerCase,
-		Strings:      []string{"help"},
+		Strings:      []string{"helpv1"},
 		HandleIntent: handleIntent,
 	}
 }

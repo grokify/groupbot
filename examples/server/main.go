@@ -10,11 +10,13 @@ import (
 	"github.com/grokify/groupbot"
 
 	"github.com/grokify/groupbot/handlers/help"
+	"github.com/grokify/groupbot/handlers/help2"
 	"github.com/grokify/groupbot/handlers/info"
 	"github.com/grokify/groupbot/handlers/list"
 	"github.com/grokify/groupbot/handlers/me"
 	"github.com/grokify/groupbot/handlers/set"
 	"github.com/grokify/groupbot/handlers/stats"
+	"github.com/grokify/groupbot/handlers/thanks"
 )
 
 func main() {
@@ -32,10 +34,12 @@ func main() {
 	intentRouter := groupbot.IntentRouter{
 		Intents: []groupbot.Intent{
 			help.NewIntent(),
+			help2.NewIntent(),
 			info.NewIntent(),
 			list.NewIntent(),
 			me.NewIntent(),
 			stats.NewIntent(),
+			thanks.NewIntent(),
 			set.NewIntent()}} // Default
 
 	// Run engine
