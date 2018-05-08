@@ -5,7 +5,9 @@ import (
 	"strings"
 
 	rc "github.com/grokify/go-ringcentral/client"
+	ju "github.com/grokify/gotilla/encoding/jsonutil"
 	"github.com/grokify/gotilla/html/htmlutil"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
 )
@@ -19,6 +21,8 @@ func NewIntent() groupbot.Intent {
 }
 
 func HandleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+	log.Info(fmt.Sprintf("HANDLE_INTENT_STATS [Start] %v", ju.MustMarshalString(glipPostEventInfo, true)))
+
 	glipPost, err := BuildPost(bot)
 	if err != nil {
 		return nil, err
