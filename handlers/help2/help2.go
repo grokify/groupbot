@@ -8,6 +8,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral/client"
 	"github.com/grokify/gotilla/html/htmlutil"
+	hum "github.com/grokify/gotilla/net/httputilmore"
 	"github.com/grokify/gotilla/strings/stringsutil"
 	log "github.com/sirupsen/logrus"
 
@@ -22,7 +23,7 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	glipPost := buildPost(bot)
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }

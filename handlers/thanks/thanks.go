@@ -2,6 +2,7 @@ package thanks
 
 import (
 	rc "github.com/grokify/go-ringcentral/client"
+	hum "github.com/grokify/gotilla/net/httputilmore"
 
 	"github.com/grokify/groupbot"
 )
@@ -14,7 +15,7 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	glipPost := buildPost(bot)
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }

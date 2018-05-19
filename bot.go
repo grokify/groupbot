@@ -15,6 +15,7 @@ import (
 	ru "github.com/grokify/go-ringcentral/clientutil"
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
 	"github.com/grokify/gotilla/encoding/jsonutil"
+	hum "github.com/grokify/gotilla/net/httputilmore"
 	"github.com/grokify/gotilla/strings/stringsutil"
 	log "github.com/sirupsen/logrus"
 )
@@ -37,12 +38,12 @@ type GlipPostEventInfo struct {
 	TryCommandsLc    []string
 }
 
-func (bot *Groupbot) Initialize() (EventResponse, error) {
+func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	appCfg := AppConfig{}
 	err := env.Parse(&appCfg)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Cannot Parse Config: %v", err.Error()))
-		return EventResponse{
+		return hum.ResponseInfo{
 			StatusCode: 500,
 			Message:    fmt.Sprintf("Initialize Error: Cannot Parse Config: %v", err.Error()),
 		}, err
@@ -56,7 +57,7 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 	rcApiClient, err := GetRingCentralApiClient(appCfg)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: RC Client: %v", err.Error()))
-		return EventResponse{
+		return hum.ResponseInfo{
 			StatusCode: 500,
 			Message:    fmt.Sprintf("Initialize Error: RC Client: %v", err.Error()),
 		}, err
@@ -66,7 +67,7 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 	googHttpClient, err := GetGoogleApiClient(appCfg)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Client: %v", err.Error()))
-		return EventResponse{
+		return hum.ResponseInfo{
 			StatusCode: 500,
 			Message:    fmt.Sprintf("Initialize Error: Google Client: %v", err.Error()),
 		}, err
@@ -78,7 +79,7 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 		bot.AppConfig.GoogleSheetTitleRecords)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
-		return EventResponse{
+		return hum.ResponseInfo{
 			StatusCode: 500,
 			Message:    fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()),
 		}, err
@@ -90,14 +91,14 @@ func (bot *Groupbot) Initialize() (EventResponse, error) {
 		bot.AppConfig.GoogleSheetTitleMetadata)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
-		return EventResponse{
+		return hum.ResponseInfo{
 			StatusCode: 500,
 			Message:    fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()),
 		}, err
 	}
 	bot.SheetsMapMeta = sm2
 
-	return EventResponse{
+	return hum.ResponseInfo{
 		StatusCode: 200,
 		Message:    "Initialize success",
 	}, nil
@@ -124,7 +125,7 @@ func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.
 	if err != nil {
 		body := `{"statusCode":500,"body":"Cannot initialize."}`
 		log.Info(body)
-		evtResp := EventResponse{
+		evtResp := hum.ResponseInfo{
 			StatusCode: 500,
 			Message:    "Cannot initialize: " + err.Error(),
 		}
@@ -186,21 +187,21 @@ func (bot *Groupbot) HandleNetHTTP(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
+func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error) {
 	evt := &ru.Event{}
 	err := json.Unmarshal(reqBodyBytes, evt)
 	log.Info(string(reqBodyBytes))
 	if err != nil {
 		log.Warn(fmt.Sprintf("Request Bytes: %v", string(reqBodyBytes)))
 		log.Warn(fmt.Sprintf("Cannot Unmarshal to Event: %s", err.Error()))
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusBadRequest,
 			Message:    fmt.Sprintf("400 Cannot Unmarshal to Event: %s", err.Error()),
 		}, fmt.Errorf("JSON Unmarshal Error: %s", err.Error())
 	}
 
 	if !evt.IsEventType(ru.GlipPostEvent) {
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,
 		}, nil
 	}
@@ -208,7 +209,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 	glipPostEvent, err := evt.GetGlipPostEventBody()
 	if err != nil {
 		log.Warn(err)
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusBadRequest,
 			Message:    fmt.Sprintf("400 Cannot unmarshal to GlipPostEvent: %v", err.Error()),
 		}, nil
@@ -220,7 +221,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotId {
 
 		log.Info("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,
 			Message:    "200 Not a relevant post: Not PostAdded|PostChanged && TextMessage",
 		}, nil
@@ -248,14 +249,14 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 
 	if err != nil {
 		log.Info("AT_MENTION_ERR: " + err.Error())
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusBadRequest,
 			Message:    "500 AtMentionedOrGroupOfTwo error",
 		}, nil
 	}
 	if !atMentionedOrGroupOfTwo {
 		log.Info("E_NO_MENTION")
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,
 			Message:    "200 Not Mentioned in a Group != 2 members",
 		}, nil
@@ -266,13 +267,13 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 	if err != nil {
 		msg := fmt.Errorf("Glip API Load Person Error: %v", err.Error())
 		log.Warn(msg.Error())
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    msg.Error()}, err
 	} else if resp.StatusCode >= 300 {
 		msg := fmt.Errorf("Glip API Status Error: %v", resp.StatusCode)
 		log.Warn(msg.Error())
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "500 " + msg.Error()}, err
 	}
@@ -300,7 +301,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*EventResponse, error) {
 	return evtResp, err
 }
 
-func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody rc.GlipCreatePost) (*EventResponse, error) {
+func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody rc.GlipCreatePost) (*hum.ResponseInfo, error) {
 	if bot.AppConfig.GroupbotResponseAutoAtMention && glipPostEventInfo.GroupMemberCount > 2 {
 		atMentionId := strings.TrimSpace(glipPostEventInfo.PostEvent.CreatorId)
 		reqBody.Text = ru.PrefixAtMentionUnlessMentioned(atMentionId, reqBody.Text)
@@ -314,17 +315,17 @@ func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody 
 	if err != nil {
 		msg := fmt.Errorf("Cannot Create Post: [%v]", err.Error())
 		log.Warn(msg.Error())
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "500 " + msg.Error(),
 		}, err
 	} else if resp.StatusCode >= 300 {
 		msg := fmt.Errorf("Cannot Create Post, API Status [%v]", resp.StatusCode)
 		log.Warn(msg.Error())
-		return &EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "500 " + msg.Error(),
 		}, err
 	}
-	return &EventResponse{}, nil
+	return &hum.ResponseInfo{}, nil
 }

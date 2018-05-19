@@ -10,6 +10,7 @@ import (
 	rc "github.com/grokify/go-ringcentral/client"
 	ru "github.com/grokify/go-ringcentral/clientutil"
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
+	hum "github.com/grokify/gotilla/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -23,7 +24,7 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	creator := glipPostEventInfo.CreatorInfo
 	creatorName := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
 	creatorEmail := creator.Email
@@ -120,7 +121,7 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 	return true, nil
 }
 
-func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	text := strings.TrimSpace(ru.StripAtMention(
 		bot.AppConfig.RingCentralBotId, glipPostEventInfo.PostEvent.Text))
 	textLc := strings.ToLower(text)
@@ -145,7 +146,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 				if err != nil {
 					msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
 					log.Warn(msg.Error())
-					return &groupbot.EventResponse{
+					return &hum.ResponseInfo{
 						StatusCode: http.StatusInternalServerError,
 						Message:    "500 " + msg.Error(),
 					}, err
@@ -165,7 +166,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 	if err != nil {
 		msg := fmt.Errorf("E_CANNOT_SET_NAME: KEY[%v] NAME[%v] ERR[%v]", email, name, err.Error())
 		log.Warn(msg.Error())
-		return &groupbot.EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "500 " + msg.Error(),
 		}, err
@@ -186,7 +187,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 	if err != nil {
 		msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
 		log.Warn(msg.Error())
-		return &groupbot.EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "500 " + msg.Error(),
 		}, err

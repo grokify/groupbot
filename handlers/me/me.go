@@ -8,6 +8,7 @@ import (
 	rc "github.com/grokify/go-ringcentral/client"
 	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
 	"github.com/grokify/gotilla/html/htmlutil"
+	hum "github.com/grokify/gotilla/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -21,7 +22,7 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*groupbot.EventResponse, error) {
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	creator := glipPostEventInfo.CreatorInfo
 	name := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
 	email := creator.Email
@@ -32,7 +33,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 	if err != nil {
 		msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
 		log.Warn(msg.Error())
-		return &groupbot.EventResponse{
+		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "500 " + msg.Error(),
 		}, err

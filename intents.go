@@ -1,15 +1,16 @@
 package groupbot
 
 import (
-	"encoding/json"
 	"regexp"
 	"strings"
 
 	"github.com/grokify/gotilla/encoding/jsonutil"
+	hum "github.com/grokify/gotilla/net/httputilmore"
 	"github.com/grokify/gotilla/strings/stringsutil"
 	log "github.com/sirupsen/logrus"
 )
 
+/*
 type EventResponse struct {
 	StatusCode int               `json:"statusCode,omitempty"`
 	Headers    map[string]string `json:"headers,omitempty"`
@@ -26,7 +27,7 @@ func (er *EventResponse) ToJson() []byte {
 	}
 	return msgJson
 }
-
+*/
 type IntentRouter struct {
 	Intents []Intent
 }
@@ -35,10 +36,10 @@ func NewIntentRouter() IntentRouter {
 	return IntentRouter{Intents: []Intent{}}
 }
 
-func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
+func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*hum.ResponseInfo, error) {
 
 	tryCmdsNotMatched := []string{}
-	intentResponses := []*EventResponse{}
+	intentResponses := []*hum.ResponseInfo{}
 
 	regexps := []*regexp.Regexp{
 		regexp.MustCompile(`[^a-zA-Z0-9\-]+`),
@@ -86,10 +87,10 @@ func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPos
 		}
 	}
 
-	return &EventResponse{}, nil
+	return &hum.ResponseInfo{}, nil
 }
 
-func (ir *IntentRouter) ProcessRequestSingle(bot *Groupbot, textNoBotMention string, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error) {
+func (ir *IntentRouter) ProcessRequestSingle(bot *Groupbot, textNoBotMention string, glipPostEventInfo *GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	textNoBotMention = strings.TrimSpace(textNoBotMention)
 	textNoBotMentionLc := strings.ToLower(textNoBotMention)
 	for _, intent := range ir.Intents {
@@ -103,7 +104,7 @@ func (ir *IntentRouter) ProcessRequestSingle(bot *Groupbot, textNoBotMention str
 			return intent.HandleIntent(bot, glipPostEventInfo)
 		}
 	}
-	return &EventResponse{}, nil
+	return &hum.ResponseInfo{}, nil
 }
 
 type IntentType int
@@ -119,5 +120,5 @@ type Intent struct {
 	Type         IntentType
 	Strings      []string
 	Regexps      []*regexp.Regexp
-	HandleIntent func(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*EventResponse, error)
+	HandleIntent func(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*hum.ResponseInfo, error)
 }
