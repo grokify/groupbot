@@ -166,6 +166,14 @@ func (bot *Groupbot) HandleNetHTTP(res http.ResponseWriter, req *http.Request) {
 	vt := req.Header.Get(ValidationTokenHeader)
 	if len(strings.TrimSpace(vt)) > 0 {
 		res.Header().Set(ValidationTokenHeader, vt)
+		res.Header().Set("Content-Security-Policy", "default-src 'self'")
+		res.Header().Set("Referrer-Policy", "origin-when-cross-origin, strict-origin-when-cross-origin")
+		res.Header().Set("Vary", "Origin")
+		res.Header().Set("X-Content-Type-Options", "nosniff")
+		res.Header().Set("X-Frame-Options", "DENY")
+		res.Header().Set("X-Permitted-Cross-Domain-Policies", "master-only")
+		res.Header().Set("X-XSS-Protection", "1; mode=block")
+		fmt.Fprint(res, "")
 		return
 	}
 	_, err := bot.Initialize()

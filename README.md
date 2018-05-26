@@ -56,3 +56,9 @@ $ zip main.zip ./main
 # --handler is the path to the executable inside the .zip
 $ aws lambda create-function --region us-east-1 --function-name Databot --memory 128 --role arn:aws:iam::account-id:role/execution_role --runtime go1.x --zip-file fileb://main.zip --handler main
 ```
+
+### Keepalive
+
+In production, there are are reasons why a RingCentral webhook may fail and become blacklisted. These should be tracked down an eliminated. If there are reasons to reenable the webhook, you can deploy the [`rchooks`] RingCentral Lambda keepalive function:
+
+* [`rchooks/apps/keepalive_lambda`](https://github.com/grokify/rchooks/tree/master/apps/keepalive_lambda)
