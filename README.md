@@ -28,6 +28,7 @@ Set the following environment variables:
 | `GROUPBOT_PORT`               | integer | n | local port number for `net/http` |
 | `GROUPBOT_REQUEST_FUZZY_AT_MENTION_MATCH` | boolean | n | Match non-completed at mentions. |
 | `GROUPBOT_RESPONSE_AUTO_AT_MENTION`   | boolean | n | |
+| `GROUPBOT_POST_SUFFIX`        | string | n | |
 | `GOOGLE_SERVICE_ACCOUNT_JWT`  | JSON string | y |  |
 | `GOOGLE_SPREADSHEET_ID`       | string | y | ID as in URL |
 | `GOOGLE_SHEET_TITLE_RECORDS`  | string | y | sheet title for data records, e.g. `Records` |
