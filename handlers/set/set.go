@@ -9,7 +9,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral/client"
 	ru "github.com/grokify/go-ringcentral/clientutil"
-	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
+	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
 	hum "github.com/grokify/gotilla/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 

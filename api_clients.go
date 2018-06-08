@@ -8,7 +8,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral/client"
 	ru "github.com/grokify/go-ringcentral/clientutil"
-	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
+	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
 	om "github.com/grokify/oauth2more"
 	gu "github.com/grokify/oauth2more/google"
 	"google.golang.org/api/sheets/v4"

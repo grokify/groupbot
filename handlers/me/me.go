@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	rc "github.com/grokify/go-ringcentral/client"
-	"github.com/grokify/googleutil/sheetsutil/sheetsmap"
+	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
 	"github.com/grokify/gotilla/html/htmlutil"
 	hum "github.com/grokify/gotilla/net/httputilmore"
 	log "github.com/sirupsen/logrus"
