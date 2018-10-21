@@ -71,7 +71,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 			"Here's the current data. Use %s to see overall stats.",
 			bot.AppConfig.Quote("stats")),
 		Attachments: []rc.GlipMessageAttachmentInfoRequest{{
-			Type_: "Card",
+			Type:  "Card",
 			Color: htmlutil.RingCentralOrangeHex,
 			Text:  outputsString}}}
 }

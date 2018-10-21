@@ -225,7 +225,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	log.Info(string(jsonutil.MustMarshal(glipPostEvent, true)))
 	if (glipPostEvent.EventType != "PostAdded" &&
 		glipPostEvent.EventType != "PostChanged") ||
-		glipPostEvent.Type_ != "TextMessage" ||
+		glipPostEvent.Type != "TextMessage" ||
 		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotId {
 
 		log.Info("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")

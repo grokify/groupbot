@@ -56,7 +56,7 @@ func BuildPost(bot *groupbot.Groupbot) (rc.GlipCreatePost, error) {
 		bot.AppConfig.Quote("list"))
 
 	reqBody.Attachments = []rc.GlipMessageAttachmentInfoRequest{{
-		Type_: "Card",
+		Type:  "Card",
 		Color: htmlutil.RingCentralOrangeHex,
 		Text:  statsTextsString}}
 

@@ -44,7 +44,7 @@ func buildPostOld(bot *groupbot.Groupbot) rc.GlipCreatePost {
 			colNames = append(colNames, col.Name)
 
 			attachment := rc.GlipMessageAttachmentInfoRequest{
-				Type_:  "Card",
+				Type:   "Card",
 				Fields: []rc.GlipMessageAttachmentFieldsInfo{},
 			}
 
@@ -211,7 +211,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 	//reqBody.Text = strings.Join(bodyLines, "\n\n")
 
 	attachment := rc.GlipMessageAttachmentInfoRequest{
-		Type_: "Card",
+		Type:  "Card",
 		Color: htmlutil.RingCentralOrangeHex,
 		Text:  strings.Join(bodyLines, "\n\n")}
 

@@ -105,7 +105,7 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 		Text: postText,
 		Attachments: []rc.GlipMessageAttachmentInfoRequest{
 			{
-				Type_:  "Card",
+				Type:   "Card",
 				Color:  color,
 				Fields: bodyFields,
 			},
