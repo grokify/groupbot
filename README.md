@@ -51,6 +51,7 @@ https://docs.aws.amazon.com/lambda/latest/dg/lambda-go-how-to-create-deployment-
 Using the `aws-cli` you can use the following approach:
 
 ```
+$ cd ./apps/server
 $ GOOS=linux go build main.go
 $ zip main.zip ./main
 # --handler is the path to the executable inside the .zip
