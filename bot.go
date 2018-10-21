@@ -148,7 +148,7 @@ func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.
 	evtResp, _ := bot.ProcessEvent([]byte(req.Body))
 
 	awsRespBody := strings.TrimSpace(string(evtResp.ToJson()))
-	log.Info("RESP_BODY: %v", awsRespBody)
+	log.Info(fmt.Sprintf("RESP_BODY: %v", awsRespBody))
 	if len(awsRespBody) == 0 ||
 		strings.Index(awsRespBody, "{") != 0 {
 		awsRespBody = `{"statusCode":500}`
