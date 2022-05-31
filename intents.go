@@ -4,9 +4,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/grokify/gotilla/encoding/jsonutil"
-	hum "github.com/grokify/gotilla/net/httputilmore"
-	"github.com/grokify/gotilla/strings/stringsutil"
+	"github.com/grokify/mogo/encoding/jsonutil"
+	hum "github.com/grokify/mogo/net/httputilmore"
+	"github.com/grokify/mogo/type/stringsutil"
 	log "github.com/sirupsen/logrus"
 )
 

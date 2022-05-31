@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
-	ru "github.com/grokify/go-ringcentral/clientutil"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
+	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
+	"github.com/grokify/goauth"
+	gu "github.com/grokify/goauth/google"
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
-	om "github.com/grokify/oauth2more"
-	gu "github.com/grokify/oauth2more/google"
 	"google.golang.org/api/sheets/v4"
 )
 
@@ -52,7 +52,7 @@ func (ac *AppConfig) Quote(s string) string {
 
 func GetRingCentralApiClient(appConfig AppConfig) (*rc.APIClient, error) {
 	fmt.Println(appConfig.RingCentralTokenJSON)
-	rcHttpClient, err := om.NewClientTokenJSON(
+	rcHttpClient, err := goauth.NewClientTokenJSON(
 		context.Background(),
 		[]byte(appConfig.RingCentralTokenJSON))
 	if err != nil {

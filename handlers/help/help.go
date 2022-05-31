@@ -6,10 +6,10 @@ import (
 	"regexp"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
-	"github.com/grokify/gotilla/html/htmlutil"
-	hum "github.com/grokify/gotilla/net/httputilmore"
-	"github.com/grokify/gotilla/strings/stringsutil"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
+	"github.com/grokify/mogo/html/htmlutil"
+	hum "github.com/grokify/mogo/net/httputilmore"
+	"github.com/grokify/mogo/type/stringsutil"
 
 	"github.com/grokify/groupbot"
 )

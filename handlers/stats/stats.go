@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
-	ju "github.com/grokify/gotilla/encoding/jsonutil"
-	"github.com/grokify/gotilla/html/htmlutil"
-	hum "github.com/grokify/gotilla/net/httputilmore"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
+	ju "github.com/grokify/mogo/encoding/jsonutil"
+	"github.com/grokify/mogo/html/htmlutil"
+	hum "github.com/grokify/mogo/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	cfg "github.com/grokify/gotilla/config"
+	cfg "github.com/grokify/mogo/config"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"

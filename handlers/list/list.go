@@ -6,9 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
-	"github.com/grokify/gotilla/html/htmlutil"
-	hum "github.com/grokify/gotilla/net/httputilmore"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
+	"github.com/grokify/mogo/html/htmlutil"
+	hum "github.com/grokify/mogo/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"

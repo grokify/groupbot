@@ -3,13 +3,14 @@ package help2
 import (
 	"fmt"
 	"math"
+
 	//"regexp"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
-	"github.com/grokify/gotilla/html/htmlutil"
-	hum "github.com/grokify/gotilla/net/httputilmore"
-	"github.com/grokify/gotilla/strings/stringsutil"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
+	"github.com/grokify/mogo/html/htmlutil"
+	hum "github.com/grokify/mogo/net/httputilmore"
+	"github.com/grokify/mogo/type/stringsutil"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -96,7 +97,7 @@ func buildPostOld(bot *groupbot.Groupbot) rc.GlipCreatePost {
 				attachment.Fields = append(attachment.Fields,
 					rc.GlipMessageAttachmentFieldsInfo{
 						Title: infoURL.Text,
-						Value: stringsutil.UrlToMarkdownLinkHostname(infoURL.URL),
+						Value: stringsutil.URLToMarkdownLinkHostname(infoURL.URL),
 						Style: "Short",
 					})
 			}
@@ -184,7 +185,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 				fmt.Sprintf("**%s** = %s", strings.ToLower(col.Abbreviation), strings.Join(enums, ", ")))
 		}
 		for _, infoURL := range col.InfoURLs {
-			urls = append(urls, "**"+infoURL.Text+"** - "+stringsutil.UrlToMarkdownLinkHostname(infoURL.URL))
+			urls = append(urls, "**"+infoURL.Text+"** - "+stringsutil.URLToMarkdownLinkHostname(infoURL.URL))
 		}
 	}
 

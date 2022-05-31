@@ -7,10 +7,10 @@ import (
 	"regexp"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
-	ru "github.com/grokify/go-ringcentral/clientutil"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
+	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
-	hum "github.com/grokify/gotilla/net/httputilmore"
+	hum "github.com/grokify/mogo/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -148,7 +148,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 					log.Warn(msg.Error())
 					return &hum.ResponseInfo{
 						StatusCode: http.StatusInternalServerError,
-						Message:    "500 " + msg.Error(),
+						Body:       "500 " + msg.Error(),
 					}, err
 				}
 				if item.Display != name {
@@ -168,7 +168,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "500 " + msg.Error(),
+			Body:       "500 " + msg.Error(),
 		}, err
 	}
 
@@ -189,7 +189,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "500 " + msg.Error(),
+			Body:       "500 " + msg.Error(),
 		}, err
 	}
 	if item.Display != name {

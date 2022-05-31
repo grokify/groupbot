@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strings"
 
-	rc "github.com/grokify/go-ringcentral/client"
+	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
-	"github.com/grokify/gotilla/html/htmlutil"
-	hum "github.com/grokify/gotilla/net/httputilmore"
+	"github.com/grokify/mogo/html/htmlutil"
+	hum "github.com/grokify/mogo/net/httputilmore"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
@@ -35,7 +35,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "500 " + msg.Error(),
+			Body:       "500 " + msg.Error(),
 		}, err
 	}
 	log.Info(fmt.Printf("ME ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
