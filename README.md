@@ -1,18 +1,18 @@
 # GroupBot
 
-[![Build Status][build-status-svg]][build-status-link]
-[![Go Report Card][goreport-svg]][goreport-link]
-[![Docs][docs-godoc-svg]][docs-godoc-link]
-[![License][license-svg]][license-link]
+[![Build Status][build-status-svg]][build-status-url]
+[![Go Report Card][goreport-svg]][goreport-url]
+[![Docs][docs-godoc-svg]][docs-godoc-url]
+[![License][license-svg]][license-url]
 
- [build-status-svg]: https://api.travis-ci.org/grokify/groupbot.svg?branch=master
- [build-status-link]: https://travis-ci.org/grokify/groupbot
+ [build-status-svg]: https://github.com/grokify/groupbot/workflows/test/badge.svg
+ [build-status-url]: https://github.com/grokify/groupbot/actions
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/groupbot
- [goreport-link]: https://goreportcard.com/report/github.com/grokify/groupbot
+ [goreport-url]: https://goreportcard.com/report/github.com/grokify/groupbot
  [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.svg
- [docs-godoc-link]: https://godoc.org/github.com/grokify/groupbot
+ [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/groupbot
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-link]: https://github.com/grokify/groupbot/blob/master/LICENSE
+ [license-url]: https://github.com/grokify/groupbot/blob/master/LICENSE
 
 ## Overview
 
