@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.32.0
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/grokify/go-ringcentral-client v0.3.6
-	github.com/grokify/goauth v0.13.6
+	github.com/grokify/goauth v0.14.3
 	github.com/grokify/googleutil v0.1.10
 	github.com/grokify/mogo v0.39.6
 	github.com/sirupsen/logrus v1.8.1
@@ -22,7 +22,7 @@ require (
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/buaazp/fasthttprouter v0.1.1 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/caarlos0/env/v6 v6.9.2 // indirect
+	github.com/caarlos0/env/v6 v6.9.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
