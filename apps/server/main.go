@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	cfg "github.com/grokify/mogo/config"
-	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
 
@@ -25,7 +24,7 @@ func main() {
 	if len(engine) == 0 {
 		err := cfg.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
 		if err != nil {
-			log.Warn(err)
+			log.Println(err.Error())
 		}
 		engine = os.Getenv("GROUPBOT_ENGINE")
 	}
@@ -45,12 +44,12 @@ func main() {
 	// Run engine
 	switch engine {
 	case "aws":
-		log.Info("Starting Engine [aws-lambda]")
+		log.Println("Starting Engine [aws-lambda]")
 		groupbot.ServeAwsLambda(intentRouter)
 	case "nethttp":
-		log.Info("Starting Engine [net/http]")
+		log.Println("Starting Engine [net/http]")
 		groupbot.ServeNetHttp(intentRouter)
 	default:
-		log.Warn(fmt.Sprintf("E_NO_HTTP_ENGINE: [%v]", engine))
+		log.Printf("E_NO_HTTP_ENGINE: [%v]", engine)
 	}
 }
