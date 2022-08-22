@@ -6,11 +6,11 @@ require (
 	github.com/aws/aws-lambda-go v1.34.1
 	github.com/caarlos0/env/v6 v6.9.3
 	github.com/grokify/go-ringcentral-client v0.3.7
-	github.com/grokify/goauth v0.15.2
+	github.com/grokify/goauth v0.16.0
 	github.com/grokify/googleutil v0.1.11
-	github.com/grokify/mogo v0.39.8
+	github.com/grokify/mogo v0.40.4
 	github.com/sirupsen/logrus v1.9.0
-	google.golang.org/api v0.92.0
+	google.golang.org/api v0.93.0
 )
 
 require (
@@ -22,7 +22,7 @@ require (
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/buaazp/fasthttprouter v0.1.1 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -37,8 +37,8 @@ require (
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
-	github.com/martinlindhe/base36 v1.1.0 // indirect
-	github.com/microcosm-cc/bluemonday v1.0.18 // indirect
+	github.com/martinlindhe/base36 v1.1.1 // indirect
+	github.com/microcosm-cc/bluemonday v1.0.19 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -47,13 +47,13 @@ require (
 	github.com/valyala/fasthttp v1.37.0 // indirect
 	github.com/valyala/fastjson v1.6.3 // indirect
 	go.opencensus.io v0.23.0 // indirect
-	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
-	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
-	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2 // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	golang.org/x/crypto v0.0.0-20220817201139-bc19a97f63c8 // indirect
+	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
+	golang.org/x/oauth2 v0.0.0-20220808172628-8227340efae7 // indirect
+	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220624142145-8cd45d7dbd1f // indirect
 	google.golang.org/grpc v1.47.0 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 )
