@@ -10,7 +10,7 @@ require (
 	github.com/grokify/googleutil v0.1.11
 	github.com/grokify/mogo v0.39.8
 	github.com/sirupsen/logrus v1.9.0
-	google.golang.org/api v0.92.0
+	google.golang.org/api v0.94.0
 )
 
 require (
@@ -49,7 +49,7 @@ require (
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
-	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2 // indirect
+	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094 // indirect
 	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
