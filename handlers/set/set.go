@@ -62,7 +62,7 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 		isItemPartial := bot.SheetsMap.IsItemPartial(&item)
 
 		if updateCount > 0 {
-			reqBody := rc.GlipCreatePost{}
+			var reqBody rc.GlipCreatePost
 			if isItemComplete {
 				reqBody = me.BuildPost(bot, "ᕕ😆ᕗ Congrats! Your info is complete!", item, "")
 			} else {
@@ -70,14 +70,13 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 			}
 			return bot.SendGlipPost(glipPostEventInfo, reqBody)
 		} else {
-			reqBody := rc.GlipCreatePost{}
+			var reqBody rc.GlipCreatePost
 			if isItemComplete {
 				reqBody = me.BuildPost(bot, "ᕕ😆ᕗ Congrats !Your info is complete!", item, "")
 			} else if isItemPartial {
 				reqBody = me.BuildPost(bot, "Good job so far! Please complete your info!", item, "")
-			} else {
-				return bot.SendGlipPost(glipPostEventInfo, reqBody)
 			}
+			return bot.SendGlipPost(glipPostEventInfo, reqBody)
 		}
 	} else if errorCount == len(texts) {
 		reqBody := rc.GlipCreatePost{
