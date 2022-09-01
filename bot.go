@@ -272,13 +272,13 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	creator, resp, err := bot.RingCentralClient.GlipApi.LoadPerson(
 		context.Background(), glipPostEvent.CreatorId)
 	if err != nil {
-		msg := fmt.Errorf("Glip API Load Person Error: %v", err.Error())
+		msg := fmt.Errorf("glip API Load Person Error: %v", err.Error())
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       msg.Error()}, err
 	} else if resp.StatusCode >= 300 {
-		msg := fmt.Errorf("Glip API Status Error: %v", resp.StatusCode)
+		msg := fmt.Errorf("glip API Status Error: %v", resp.StatusCode)
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
@@ -320,14 +320,14 @@ func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody 
 		context.Background(), glipPostEventInfo.PostEvent.GroupId, reqBody,
 	)
 	if err != nil {
-		msg := fmt.Errorf("Cannot Create Post: [%v]", err.Error())
+		msg := fmt.Errorf("cannot Create Post: [%v]", err.Error())
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       "500 " + msg.Error(),
 		}, err
 	} else if resp.StatusCode >= 300 {
-		msg := fmt.Errorf("Cannot Create Post, API Status [%v]", resp.StatusCode)
+		msg := fmt.Errorf("cannot Create Post, API Status [%v]", resp.StatusCode)
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
