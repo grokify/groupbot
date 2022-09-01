@@ -31,7 +31,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 	log.Info("INTENT [Me]")
 	item, err := bot.SheetsMap.GetOrCreateItemWithName(email, name)
 	if err != nil {
-		msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
+		msg := fmt.Errorf("cannot get item from sheet: [%v]", email)
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
