@@ -48,7 +48,7 @@ func main() {
 		groupbot.ServeAwsLambda(intentRouter)
 	case "nethttp":
 		log.Println("Starting Engine [net/http]")
-		groupbot.ServeNetHttp(intentRouter)
+		groupbot.ServeNetHTTP(intentRouter)
 	default:
 		log.Printf("E_NO_HTTP_ENGINE: [%v]", engine)
 	}

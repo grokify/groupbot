@@ -234,8 +234,8 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 		}, nil
 	}
 
-	glipApiUtil := ru.GlipApiUtil{ApiClient: bot.RingCentralClient}
-	groupMemberCount, err := glipApiUtil.GlipGroupMemberCount(glipPostEvent.GroupId)
+	glipAPIUtil := ru.GlipApiUtil{ApiClient: bot.RingCentralClient}
+	groupMemberCount, err := glipAPIUtil.GlipGroupMemberCount(glipPostEvent.GroupId)
 	if err != nil {
 		groupMemberCount = -1
 	}
@@ -252,7 +252,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	log.Info("AT_MENTION_INPUT: " + string(jsonutil.MustMarshal(info, true)))
 	log.Info("CONFIG: " + string(jsonutil.MustMarshal(bot.AppConfig, true)))
 
-	atMentionedOrGroupOfTwo, err := glipApiUtil.AtMentionedOrGroupOfTwoFuzzy(info)
+	atMentionedOrGroupOfTwo, err := glipAPIUtil.AtMentionedOrGroupOfTwoFuzzy(info)
 
 	if err != nil {
 		log.Info("AT_MENTION_ERR: " + err.Error())
@@ -310,8 +310,8 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 
 func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody rc.GlipCreatePost) (*hum.ResponseInfo, error) {
 	if bot.AppConfig.GroupbotResponseAutoAtMention && glipPostEventInfo.GroupMemberCount > 2 {
-		atMentionId := strings.TrimSpace(glipPostEventInfo.PostEvent.CreatorId)
-		reqBody.Text = ru.PrefixAtMentionUnlessMentioned(atMentionId, reqBody.Text)
+		atMentionID := strings.TrimSpace(glipPostEventInfo.PostEvent.CreatorId)
+		reqBody.Text = ru.PrefixAtMentionUnlessMentioned(atMentionID, reqBody.Text)
 	}
 
 	reqBody.Text = bot.AppConfig.AppendPostSuffix(reqBody.Text)

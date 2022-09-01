@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func ServeNetHttp(intentRouter IntentRouter) {
+func ServeNetHTTP(intentRouter IntentRouter) {
 	bot := Groupbot{}
 	bot.Initialize()
 	bot.IntentRouter = intentRouter
