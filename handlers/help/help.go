@@ -94,7 +94,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 			attachment.Fields = append(attachment.Fields,
 				rc.GlipMessageAttachmentFieldsInfo{
 					Title: infoURL.Text,
-					Value: UrlToMarkdownLinkHostname(infoURL.URL),
+					Value: URLToMarkdownLinkHostname(infoURL.URL),
 					Style: "Short",
 				})
 		}
@@ -136,7 +136,7 @@ func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
 	return reqBody
 }
 
-func UrlToMarkdownLinkHostname(url string) string {
+func URLToMarkdownLinkHostname(url string) string {
 	rx := regexp.MustCompile(`(?i)^https?://([^/]+)(/[^/])`)
 	m := rx.FindStringSubmatch(url)
 	if len(m) > 1 {
