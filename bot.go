@@ -227,7 +227,6 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 		glipPostEvent.EventType != "PostChanged") ||
 		glipPostEvent.Type != "TextMessage" ||
 		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotId {
-
 		log.Info("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,

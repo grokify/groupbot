@@ -47,7 +47,6 @@ func (ac *AppConfig) AppendPostSuffix(s string) string {
 
 func (ac *AppConfig) Quote(s string) string {
 	return ac.GroupbotCharQuoteLeft + strings.TrimSpace(s) + ac.GroupbotCharQuoteRight
-
 }
 
 func GetRingCentralApiClient(appConfig AppConfig) (*rc.APIClient, error) {
