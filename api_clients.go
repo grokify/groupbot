@@ -29,10 +29,10 @@ type AppConfig struct {
 	RingCentralTokenJSON               string `env:"RINGCENTRAL_TOKEN_JSON"`
 	RingCentralServerURL               string `env:"RINGCENTRAL_SERVER_URL"`
 	RingCentralWebhookURL              string `env:"RINGCENTRAL_WEBHOOK_URL"`
-	RingCentralBotId                   string `env:"RINGCENTRAL_BOT_ID"`
+	RingCentralBotID                   string `env:"RINGCENTRAL_BOT_ID"`
 	RingCentralBotName                 string `env:"RINGCENTRAL_BOT_NAME"`
 	GoogleSvcAccountJWT                string `env:"GOOGLE_SERVICE_ACCOUNT_JWT"`
-	GoogleSpreadsheetId                string `env:"GOOGLE_SPREADSHEET_ID"`
+	GoogleSpreadsheetID                string `env:"GOOGLE_SPREADSHEET_ID"`
 	GoogleSheetTitleRecords            string `env:"GOOGLE_SHEET_TITLE_RECORDS"`
 	GoogleSheetTitleMetadata           string `env:"GOOGLE_SHEET_TITLE_METADATA"`
 }
@@ -49,7 +49,7 @@ func (ac *AppConfig) Quote(s string) string {
 	return ac.GroupbotCharQuoteLeft + strings.TrimSpace(s) + ac.GroupbotCharQuoteRight
 }
 
-func GetRingCentralApiClient(appConfig AppConfig) (*rc.APIClient, error) {
+func GetRingCentralAPIClient(appConfig AppConfig) (*rc.APIClient, error) {
 	fmt.Println(appConfig.RingCentralTokenJSON)
 	rcHttpClient, err := goauth.NewClientTokenJSON(
 		context.Background(),

@@ -23,7 +23,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 }
 
 func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
-	spreadsheetURL := sheetsutil.SheetToWebURL(bot.AppConfig.GoogleSpreadsheetId)
+	spreadsheetURL := sheetsutil.SheetToWebURL(bot.AppConfig.GoogleSpreadsheetID)
 	return rc.GlipCreatePost{
 		Text: fmt.Sprintf("I am a bot accessing this Google sheet:\n\n%s\n\nYou can find my code here: [grokify/groupbot](https://github.com/grokify/groupbot).", spreadsheetURL),
 	}

@@ -122,7 +122,7 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 
 func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
 	text := strings.TrimSpace(ru.StripAtMention(
-		bot.AppConfig.RingCentralBotId, glipPostEventInfo.PostEvent.Text))
+		bot.AppConfig.RingCentralBotID, glipPostEventInfo.PostEvent.Text))
 	textLc := strings.ToLower(text)
 
 	creator := glipPostEventInfo.CreatorInfo

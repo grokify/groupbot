@@ -52,9 +52,9 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	appCfg.GroupbotCharQuoteRight = CharQuoteRight
 	bot.AppConfig = appCfg
 
-	log.Info(fmt.Sprintf("BOT_ID: %v", bot.AppConfig.RingCentralBotId))
+	log.Info(fmt.Sprintf("BOT_ID: %v", bot.AppConfig.RingCentralBotID))
 
-	rcApiClient, err := GetRingCentralApiClient(appCfg)
+	rcApiClient, err := GetRingCentralAPIClient(appCfg)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: RC Client: %v", err.Error()))
 		return hum.ResponseInfo{
@@ -75,7 +75,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	bot.GoogleClient = googHttpClient
 
 	sm, err := GetSheetsMap(googHttpClient,
-		bot.AppConfig.GoogleSpreadsheetId,
+		bot.AppConfig.GoogleSpreadsheetID,
 		bot.AppConfig.GoogleSheetTitleRecords)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
@@ -87,7 +87,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	bot.SheetsMap = sm
 
 	sm2, err := GetSheetsMap(googHttpClient,
-		bot.AppConfig.GoogleSpreadsheetId,
+		bot.AppConfig.GoogleSpreadsheetID,
 		bot.AppConfig.GoogleSheetTitleMetadata)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
@@ -226,7 +226,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	if (glipPostEvent.EventType != "PostAdded" &&
 		glipPostEvent.EventType != "PostChanged") ||
 		glipPostEvent.Type != "TextMessage" ||
-		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotId {
+		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotID {
 		log.Info("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,
@@ -242,7 +242,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	log.Info(fmt.Sprintf("GROUP_MEMBER_COUNT [%v]", groupMemberCount))
 
 	info := ru.GlipInfoAtMentionOrGroupOfTwoInfo{
-		PersonId:       bot.AppConfig.RingCentralBotId,
+		PersonId:       bot.AppConfig.RingCentralBotID,
 		PersonName:     bot.AppConfig.RingCentralBotName,
 		FuzzyAtMention: bot.AppConfig.GroupbotRequestFuzzyAtMentionMatch,
 		AtMentions:     glipPostEvent.Mentions,
@@ -291,7 +291,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 
 	log.Info(fmt.Sprintf("TEXT_PREP [%v]", glipPostEvent.Text))
 	//text := ru.StripAtMention(bot.AppConfig.RingCentralBotId, glipPostEvent.Text)
-	text := ru.StripAtMentionAll(bot.AppConfig.RingCentralBotId,
+	text := ru.StripAtMentionAll(bot.AppConfig.RingCentralBotID,
 		bot.AppConfig.RingCentralBotName,
 		glipPostEvent.Text)
 	texts := regexp.MustCompile(`[,\n]`).Split(strings.ToLower(text), -1)
