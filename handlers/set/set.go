@@ -116,7 +116,7 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 	if err != nil {
 		msg := fmt.Errorf("E_CANNOT_ADD_TO_SHEET: USER_KEY[%v] TEXT_VAL[%v]", email, userText)
 		log.Warn(msg.Error())
-		return false, errors.New("Cannot Understand")
+		return false, errors.New("cannot understand")
 	}
 	return true, nil
 }
@@ -144,7 +144,7 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 			if textLc == colNameTry {
 				item, err := bot.SheetsMap.GetItem(email)
 				if err != nil {
-					msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
+					msg := fmt.Errorf("cannot get item from sheet: [%v]", email)
 					log.Warn(msg.Error())
 					return &hum.ResponseInfo{
 						StatusCode: http.StatusInternalServerError,
@@ -153,7 +153,10 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 				}
 				if item.Display != name {
 					item.Display = name
-					bot.SheetsMap.SynchronizeItem(item)
+					err := bot.SheetsMap.SynchronizeItem(item)
+					if err != nil {
+						return nil, err
+					}
 				}
 				reqBody := me.BuildPost(bot, fmt.Sprintf("Here's your info, %v. Use `me` to see all your data.", name), item, col.Name)
 				return bot.SendGlipPost(glipPostEventInfo, reqBody)
@@ -178,14 +181,14 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 		log.Warn(msg.Error())
 
 		reqBody := rc.GlipCreatePost{
-			Text: fmt.Sprintf("I couldn't understand you. Please type %s to get more information on how I can help. Remember to @ mention me if our conversation has more than the two of us.", bot.AppConfig.Quote("help"))}
+			Text: fmt.Sprintf("bot couldn't understand you. Please type %s to get more information on how I can help. Remember to @ mention me if our conversation has more than the two of us.", bot.AppConfig.Quote("help"))}
 
 		return bot.SendGlipPost(glipPostEventInfo, reqBody)
 	}
 
 	item, err := bot.SheetsMap.GetItem(email)
 	if err != nil {
-		msg := fmt.Errorf("Cannot get item from sheet: [%v]", email)
+		msg := fmt.Errorf("cannot get item from sheet: [%v]", email)
 		log.Warn(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
@@ -194,7 +197,10 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 	}
 	if item.Display != name {
 		item.Display = name
-		bot.SheetsMap.SynchronizeItem(item)
+		err := bot.SheetsMap.SynchronizeItem(item)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	emptyColsText := ""
@@ -204,7 +210,6 @@ func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.Glip
 	}
 
 	glipPost := me.BuildPost(bot,
-		fmt.Sprintf("Thanks for the update.%v", emptyColsText),
-		item, "")
+		fmt.Sprintf("Thanks for the update.%v", emptyColsText), item, "")
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }

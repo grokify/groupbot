@@ -290,8 +290,8 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	log.Info(fmt.Sprintf("Poster [%v][%v]", name, email))
 
 	log.Info(fmt.Sprintf("TEXT_PREP [%v]", glipPostEvent.Text))
-	text := ru.StripAtMention(bot.AppConfig.RingCentralBotId, glipPostEvent.Text)
-	text = ru.StripAtMentionAll(bot.AppConfig.RingCentralBotId,
+	//text := ru.StripAtMention(bot.AppConfig.RingCentralBotId, glipPostEvent.Text)
+	text := ru.StripAtMentionAll(bot.AppConfig.RingCentralBotId,
 		bot.AppConfig.RingCentralBotName,
 		glipPostEvent.Text)
 	texts := regexp.MustCompile(`[,\n]`).Split(strings.ToLower(text), -1)

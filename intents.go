@@ -37,7 +37,6 @@ func NewIntentRouter() IntentRouter {
 }
 
 func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPostEventInfo) (*hum.ResponseInfo, error) {
-
 	tryCmdsNotMatched := []string{}
 	intentResponses := []*hum.ResponseInfo{}
 
