@@ -64,7 +64,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	}
 	bot.RingCentralClient = rcApiClient
 
-	googHttpClient, err := GetGoogleApiClient(appCfg)
+	googHttpClient, err := GetGoogleAPIClient(appCfg)
 	if err != nil {
 		log.Info(fmt.Sprintf("Initialize Error: Google Client: %v", err.Error()))
 		return hum.ResponseInfo{

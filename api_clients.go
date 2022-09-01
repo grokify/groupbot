@@ -51,7 +51,7 @@ func (ac *AppConfig) Quote(s string) string {
 
 func GetRingCentralAPIClient(appConfig AppConfig) (*rc.APIClient, error) {
 	fmt.Println(appConfig.RingCentralTokenJSON)
-	rcHttpClient, err := goauth.NewClientTokenJSON(
+	rcHTTPClient, err := goauth.NewClientTokenJSON(
 		context.Background(),
 		[]byte(appConfig.RingCentralTokenJSON))
 	if err != nil {
@@ -69,14 +69,14 @@ func GetRingCentralAPIClient(appConfig AppConfig) (*rc.APIClient, error) {
 		}
 	*/
 	return ru.NewApiClientHttpClientBaseURL(
-		rcHttpClient, appConfig.RingCentralServerURL,
+		rcHTTPClient, appConfig.RingCentralServerURL,
 	)
 }
 
-func GetGoogleApiClient(appConfig AppConfig) (*http.Client, error) {
+func GetGoogleAPIClient(appConfig AppConfig) (*http.Client, error) {
 	jwtString := appConfig.GoogleSvcAccountJWT
 	if len(jwtString) < 1 {
-		return nil, fmt.Errorf("No JWT")
+		return nil, fmt.Errorf("no jwt")
 	}
 
 	return gu.NewClientFromJWTJSON(
@@ -86,8 +86,8 @@ func GetGoogleApiClient(appConfig AppConfig) (*http.Client, error) {
 		sheets.SpreadsheetsScope)
 }
 
-func GetSheetsMap(googClient *http.Client, spreadsheetId string, sheetTitle string) (sheetsmap.SheetsMap, error) {
-	sm, err := sheetsmap.NewSheetsMapTitle(googClient, spreadsheetId, sheetTitle)
+func GetSheetsMap(googClient *http.Client, spreadsheetID string, sheetTitle string) (sheetsmap.SheetsMap, error) {
+	sm, err := sheetsmap.NewSheetsMapTitle(googClient, spreadsheetID, sheetTitle)
 	if err != nil {
 		return sm, err
 	}
