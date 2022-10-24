@@ -11,7 +11,7 @@ import (
 	"github.com/grokify/goauth"
 	gu "github.com/grokify/goauth/google"
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
-	"google.golang.org/api/sheets/v4"
+	sheets "google.golang.org/api/sheets/v4"
 )
 
 const (
