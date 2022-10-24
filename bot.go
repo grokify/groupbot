@@ -296,7 +296,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 		glipPostEvent.Text)
 	texts := regexp.MustCompile(`[,\n]`).Split(strings.ToLower(text), -1)
 	log.Info("TEXTS_1 " + jsonutil.MustMarshalString(texts, true))
-	log.Info("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceTrimSpace(texts), true))
+	log.Info("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceTrimSpace(texts, false), true))
 
 	postEventInfo := GlipPostEventInfo{
 		PostEvent:        glipPostEvent,
