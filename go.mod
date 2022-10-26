@@ -10,7 +10,7 @@ require (
 	github.com/grokify/googleutil v0.1.13
 	github.com/grokify/mogo v0.40.9
 	github.com/sirupsen/logrus v1.9.0
-	google.golang.org/api v0.100.0
+	google.golang.org/api v0.101.0
 )
 
 require (
@@ -53,7 +53,7 @@ require (
 	golang.org/x/sys v0.0.0-20221010170243-090e33056c14 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20221014213838-99cd37c6964a // indirect
+	google.golang.org/genproto v0.0.0-20221018160656-63c7b68cfc55 // indirect
 	google.golang.org/grpc v1.50.1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
