@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/caarlos0/env/v6"
+	env "github.com/caarlos0/env/v6"
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
 	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
