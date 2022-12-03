@@ -11,23 +11,24 @@ import (
 )
 
 /*
-type EventResponse struct {
-	StatusCode int               `json:"statusCode,omitempty"`
-	Headers    map[string]string `json:"headers,omitempty"`
-	Message    string            `json:"message,omitempty"`
-}
+	type EventResponse struct {
+		StatusCode int               `json:"statusCode,omitempty"`
+		Headers    map[string]string `json:"headers,omitempty"`
+		Message    string            `json:"message,omitempty"`
+	}
 
-func (er *EventResponse) ToJson() []byte {
-	if len(er.Message) == 0 {
-		er.Message = ""
+	func (er *EventResponse) ToJson() []byte {
+		if len(er.Message) == 0 {
+			er.Message = ""
+		}
+		msgJson, err := json.Marshal(er)
+		if err != nil {
+			return []byte(`{"statusCode":500,"message":"Cannot Marshal to JSON"}`)
+		}
+		return msgJson
 	}
-	msgJson, err := json.Marshal(er)
-	if err != nil {
-		return []byte(`{"statusCode":500,"message":"Cannot Marshal to JSON"}`)
-	}
-	return msgJson
-}
 */
+
 type IntentRouter struct {
 	Intents []Intent
 }
