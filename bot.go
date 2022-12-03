@@ -4,7 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
 	"regexp"
 	"strings"
@@ -17,7 +18,6 @@ import (
 	"github.com/grokify/mogo/encoding/jsonutil"
 	hum "github.com/grokify/mogo/net/httputilmore"
 	"github.com/grokify/mogo/type/stringsutil"
-	log "github.com/sirupsen/logrus"
 )
 
 const ValidationTokenHeader = "Validation-Token"
@@ -42,7 +42,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	appCfg := AppConfig{}
 	err := env.Parse(&appCfg)
 	if err != nil {
-		log.Info(fmt.Sprintf("Initialize Error: Cannot Parse Config: %v", err.Error()))
+		log.Printf("Initialize Error: Cannot Parse Config: %v", err.Error())
 		return hum.ResponseInfo{
 			StatusCode: 500,
 			Body:       fmt.Sprintf("Initialize Error: Cannot Parse Config: %v", err.Error()),
@@ -52,11 +52,11 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 	appCfg.GroupbotCharQuoteRight = CharQuoteRight
 	bot.AppConfig = appCfg
 
-	log.Info(fmt.Sprintf("BOT_ID: %v", bot.AppConfig.RingCentralBotID))
+	log.Printf("BOT_ID: %v", bot.AppConfig.RingCentralBotID)
 
 	rcAPIClient, err := GetRingCentralAPIClient(appCfg)
 	if err != nil {
-		log.Info(fmt.Sprintf("Initialize Error: RC Client: %v", err.Error()))
+		log.Printf("Initialize Error: RC Client: %v", err.Error())
 		return hum.ResponseInfo{
 			StatusCode: 500,
 			Body:       fmt.Sprintf("Initialize Error: RC Client: %v", err.Error()),
@@ -66,7 +66,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 
 	googHTTPClient, err := GetGoogleAPIClient(appCfg)
 	if err != nil {
-		log.Info(fmt.Sprintf("Initialize Error: Google Client: %v", err.Error()))
+		log.Printf("Initialize Error: Google Client: %v", err.Error())
 		return hum.ResponseInfo{
 			StatusCode: 500,
 			Body:       fmt.Sprintf("Initialize Error: Google Client: %v", err.Error()),
@@ -78,7 +78,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 		bot.AppConfig.GoogleSpreadsheetID,
 		bot.AppConfig.GoogleSheetTitleRecords)
 	if err != nil {
-		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
+		log.Printf("Initialize Error: Google Sheets: %v", err.Error())
 		return hum.ResponseInfo{
 			StatusCode: 500,
 			Body:       fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()),
@@ -90,7 +90,7 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 		bot.AppConfig.GoogleSpreadsheetID,
 		bot.AppConfig.GoogleSheetTitleMetadata)
 	if err != nil {
-		log.Info(fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()))
+		log.Printf("Initialize Error: Google Sheets: %v", err.Error())
 		return hum.ResponseInfo{
 			StatusCode: 500,
 			Body:       fmt.Sprintf("Initialize Error: Google Sheets: %v", err.Error()),
@@ -105,8 +105,8 @@ func (bot *Groupbot) Initialize() (hum.ResponseInfo, error) {
 }
 
 func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	log.Info("Handling Lambda Request")
-	log.Info(fmt.Sprintf("REQ_BODY: %v", req.Body))
+	log.Print("Handling Lambda Request")
+	log.Printf("REQ_BODY: %v", req.Body)
 	/*
 		vt := req.Header.Get(ValidationTokenHeader)
 		if len(strings.TrimSpace(vt)) > 0 {
@@ -124,7 +124,7 @@ func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.
 	_, err := bot.Initialize()
 	if err != nil {
 		body := `{"statusCode":500,"body":"Cannot initialize."}`
-		log.Info(body)
+		log.Println(body)
 		evtResp := hum.ResponseInfo{
 			StatusCode: 500,
 			Body:       "Cannot initialize: " + err.Error(),
@@ -138,7 +138,7 @@ func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.
 
 	if vt, ok := req.Headers[ValidationTokenHeader]; ok {
 		body := `{"statusCode":200}`
-		log.Info(body)
+		log.Println(body)
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusOK,
 			Headers:    map[string]string{ValidationTokenHeader: vt},
@@ -148,7 +148,7 @@ func (bot *Groupbot) HandleAwsLambda(req events.APIGatewayProxyRequest) (events.
 	evtResp, _ := bot.ProcessEvent([]byte(req.Body))
 
 	awsRespBody := strings.TrimSpace(string(evtResp.ToJSON()))
-	log.Info(fmt.Sprintf("RESP_BODY: %v", awsRespBody))
+	log.Printf("RESP_BODY: %v\n", awsRespBody)
 	if len(awsRespBody) == 0 ||
 		strings.Index(awsRespBody, "{") != 0 {
 		awsRespBody = `{"statusCode":500}`
@@ -178,12 +178,12 @@ func (bot *Groupbot) HandleNetHTTP(res http.ResponseWriter, req *http.Request) {
 	}
 	_, err := bot.Initialize()
 	if err != nil {
-		log.Warn(err)
+		log.Println(err)
 	}
 
-	reqBodyBytes, err := ioutil.ReadAll(req.Body)
+	reqBodyBytes, err := io.ReadAll(req.Body)
 	if err != nil {
-		log.Warn(err)
+		log.Println(err)
 	}
 
 	evtResp, err := bot.ProcessEvent(reqBodyBytes)
@@ -198,10 +198,10 @@ func (bot *Groupbot) HandleNetHTTP(res http.ResponseWriter, req *http.Request) {
 func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error) {
 	evt := &ru.Event{}
 	err := json.Unmarshal(reqBodyBytes, evt)
-	log.Info(string(reqBodyBytes))
+	log.Println(string(reqBodyBytes))
 	if err != nil {
-		log.Warn(fmt.Sprintf("Request Bytes: %v", string(reqBodyBytes)))
-		log.Warn(fmt.Sprintf("Cannot Unmarshal to Event: %s", err.Error()))
+		log.Printf("Request Bytes: %v", string(reqBodyBytes))
+		log.Printf("Cannot Unmarshal to Event: %s", err.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusBadRequest,
 			Body:       fmt.Sprintf("400 Cannot Unmarshal to Event: %s", err.Error()),
@@ -216,18 +216,18 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 
 	glipPostEvent, err := evt.GetGlipPostEventBody()
 	if err != nil {
-		log.Warn(err)
+		log.Print(err.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusBadRequest,
 			Body:       fmt.Sprintf("400 Cannot unmarshal to GlipPostEvent: %v", err.Error()),
 		}, nil
 	}
-	log.Info(string(jsonutil.MustMarshal(glipPostEvent, true)))
+	log.Println(string(jsonutil.MustMarshal(glipPostEvent, true)))
 	if (glipPostEvent.EventType != "PostAdded" &&
 		glipPostEvent.EventType != "PostChanged") ||
 		glipPostEvent.Type != "TextMessage" ||
 		glipPostEvent.CreatorId == bot.AppConfig.RingCentralBotID {
-		log.Info("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")
+		log.Print("POST_EVENT_TYPE_NOT_IN [PostAdded, TextMessage]")
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,
 			Body:       "200 Not a relevant post: Not PostAdded|PostChanged && TextMessage",
@@ -239,7 +239,7 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 	if err != nil {
 		groupMemberCount = -1
 	}
-	log.Info(fmt.Sprintf("GROUP_MEMBER_COUNT [%v]", groupMemberCount))
+	log.Printf("GROUP_MEMBER_COUNT [%v]", groupMemberCount)
 
 	info := ru.GlipInfoAtMentionOrGroupOfTwoInfo{
 		PersonId:       bot.AppConfig.RingCentralBotID,
@@ -249,20 +249,20 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 		GroupId:        glipPostEvent.GroupId,
 		TextRaw:        glipPostEvent.Text}
 
-	log.Info("AT_MENTION_INPUT: " + string(jsonutil.MustMarshal(info, true)))
-	log.Info("CONFIG: " + string(jsonutil.MustMarshal(bot.AppConfig, true)))
+	log.Print("AT_MENTION_INPUT: " + string(jsonutil.MustMarshal(info, true)))
+	log.Print("CONFIG: " + string(jsonutil.MustMarshal(bot.AppConfig, true)))
 
 	atMentionedOrGroupOfTwo, err := glipAPIUtil.AtMentionedOrGroupOfTwoFuzzy(info)
 
 	if err != nil {
-		log.Info("AT_MENTION_ERR: " + err.Error())
+		log.Print("AT_MENTION_ERR: " + err.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusBadRequest,
 			Body:       "500 AtMentionedOrGroupOfTwo error",
 		}, nil
 	}
 	if !atMentionedOrGroupOfTwo {
-		log.Info("E_NO_MENTION")
+		log.Print("E_NO_MENTION")
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusOK,
 			Body:       "200 Not Mentioned in a Group != 2 members",
@@ -273,13 +273,13 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 		context.Background(), glipPostEvent.CreatorId)
 	if err != nil {
 		msg := fmt.Errorf("glip API Load Person Error: %v", err.Error())
-		log.Warn(msg.Error())
+		log.Print(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       msg.Error()}, err
 	} else if resp.StatusCode >= 300 {
 		msg := fmt.Errorf("glip API Status Error: %v", resp.StatusCode)
-		log.Warn(msg.Error())
+		log.Print(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       "500 " + msg.Error()}, err
@@ -287,16 +287,16 @@ func (bot *Groupbot) ProcessEvent(reqBodyBytes []byte) (*hum.ResponseInfo, error
 
 	name := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
 	email := creator.Email
-	log.Info(fmt.Sprintf("Poster [%v][%v]", name, email))
+	log.Printf("Poster [%v][%v]", name, email)
 
-	log.Info(fmt.Sprintf("TEXT_PREP [%v]", glipPostEvent.Text))
+	log.Printf("TEXT_PREP [%v]", glipPostEvent.Text)
 	//text := ru.StripAtMention(bot.AppConfig.RingCentralBotId, glipPostEvent.Text)
 	text := ru.StripAtMentionAll(bot.AppConfig.RingCentralBotID,
 		bot.AppConfig.RingCentralBotName,
 		glipPostEvent.Text)
 	texts := regexp.MustCompile(`[,\n]`).Split(strings.ToLower(text), -1)
-	log.Info("TEXTS_1 " + jsonutil.MustMarshalString(texts, true))
-	log.Info("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceTrimSpace(texts, false), true))
+	log.Print("TEXTS_1 " + jsonutil.MustMarshalString(texts, true))
+	log.Print("TEXTS_2 " + jsonutil.MustMarshalString(stringsutil.SliceTrimSpace(texts, false), true))
 
 	postEventInfo := GlipPostEventInfo{
 		PostEvent:        glipPostEvent,
@@ -321,14 +321,14 @@ func (bot *Groupbot) SendGlipPost(glipPostEventInfo *GlipPostEventInfo, reqBody 
 	)
 	if err != nil {
 		msg := fmt.Errorf("cannot Create Post: [%v]", err.Error())
-		log.Warn(msg.Error())
+		log.Print(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       "500 " + msg.Error(),
 		}, err
 	} else if resp.StatusCode >= 300 {
 		msg := fmt.Errorf("cannot Create Post, API Status [%v]", resp.StatusCode)
-		log.Warn(msg.Error())
+		log.Print(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       "500 " + msg.Error(),

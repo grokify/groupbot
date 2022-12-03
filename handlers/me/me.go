@@ -2,6 +2,7 @@ package me
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -9,7 +10,6 @@ import (
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
 	"github.com/grokify/mogo/html/htmlutil"
 	hum "github.com/grokify/mogo/net/httputilmore"
-	log "github.com/sirupsen/logrus"
 
 	"github.com/grokify/groupbot"
 )
@@ -26,25 +26,25 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 	creator := glipPostEventInfo.CreatorInfo
 	name := strings.Join([]string{creator.FirstName, creator.LastName}, " ")
 	email := creator.Email
-	log.Info(fmt.Sprintf("Poster [%v][%v]", name, email))
+	log.Printf("Poster [%v][%v]\n", name, email)
 
-	log.Info("INTENT [Me]")
+	log.Println("INTENT [Me]")
 	item, err := bot.SheetsMap.GetOrCreateItemWithName(email, name)
 	if err != nil {
 		msg := fmt.Errorf("cannot get item from sheet: [%v]", email)
-		log.Warn(msg.Error())
+		log.Println(msg.Error())
 		return &hum.ResponseInfo{
 			StatusCode: http.StatusInternalServerError,
 			Body:       "500 " + msg.Error(),
 		}, err
 	}
-	log.Info(fmt.Printf("ME ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
+	log.Printf("ME ITEM.DISPLAY[%v] CREATOR.NAME[%v]\n", item.Display, name)
 	if item.Display != name {
-		log.Info(fmt.Printf("SYNCING ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
+		log.Printf("SYNCING ITEM.DISPLAY[%v] CREATOR.NAME[%v]\n", item.Display, name)
 		item.Display = name
 		err := bot.SheetsMap.SynchronizeItem(item)
 		if err != nil {
-			log.Info(fmt.Printf("SYNC_FAILED ITEM.DISPLAY[%v] CREATOR.NAME[%v]", item.Display, name))
+			log.Printf("SYNC_FAILED ITEM.DISPLAY[%v] CREATOR.NAME[%v]\n", item.Display, name)
 		}
 	}
 
@@ -66,11 +66,11 @@ func BuildPost(bot *groupbot.Groupbot, postText string, item sheetsmap.Item, col
 	color := htmlutil.Color2GreenHex
 
 	for i, col := range bot.SheetsMap.Columns {
-		log.Info(fmt.Printf("ME_COL_NAME: %v\n", col.Name))
+		log.Printf("ME_COL_NAME: %v\n", col.Name)
 		if i < numPrefixColumns {
 			continue
 		}
-		log.Info(fmt.Printf("ME_COL_NAME_ADD: %v\n", col.Name))
+		log.Printf("ME_COL_NAME_ADD: %v\n", col.Name)
 
 		userValue := ""
 		if userValueTry, ok := item.Data[col.Name]; ok {

@@ -1,13 +1,13 @@
 package groupbot
 
 import (
+	"log"
 	"regexp"
 	"strings"
 
 	"github.com/grokify/mogo/encoding/jsonutil"
 	hum "github.com/grokify/mogo/net/httputilmore"
 	"github.com/grokify/mogo/type/stringsutil"
-	log "github.com/sirupsen/logrus"
 )
 
 /*
@@ -77,7 +77,7 @@ func (ir *IntentRouter) ProcessRequest(bot *Groupbot, glipPostEventInfo *GlipPos
 	)
 
 	if len(tryCmdsNotMatched) > 0 {
-		log.Info("TRY_CMDS_NOT_MATCHED " + jsonutil.MustMarshalString(tryCmdsNotMatched, true))
+		log.Println("TRY_CMDS_NOT_MATCHED " + jsonutil.MustMarshalString(tryCmdsNotMatched, true))
 		glipPostEventInfo.TryCommandsLc = tryCmdsNotMatched
 		for _, intent := range ir.Intents {
 			if intent.Type == MatchAny {
