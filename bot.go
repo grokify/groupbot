@@ -16,7 +16,7 @@ import (
 	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
 	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
 	"github.com/grokify/mogo/encoding/jsonutil"
-	hum "github.com/grokify/mogo/net/httputilmore"
+	hum "github.com/grokify/mogo/net/http/httputilmore"
 	"github.com/grokify/mogo/type/stringsutil"
 )
 

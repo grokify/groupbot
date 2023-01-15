@@ -8,7 +8,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
 	"github.com/grokify/mogo/html/htmlutil"
-	hum "github.com/grokify/mogo/net/httputilmore"
+	"github.com/grokify/mogo/net/http/httputilmore"
 	"github.com/grokify/mogo/type/stringsutil"
 
 	"github.com/grokify/groupbot"
@@ -22,7 +22,7 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*httputilmore.ResponseInfo, error) {
 	glipPost := buildPost(bot)
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }

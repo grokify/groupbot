@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/grokify/mogo/encoding/jsonutil"
-	hum "github.com/grokify/mogo/net/httputilmore"
+	hum "github.com/grokify/mogo/net/http/httputilmore"
 	"github.com/grokify/mogo/type/stringsutil"
 )
 

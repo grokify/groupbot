@@ -5,7 +5,7 @@ import (
 
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
 	sheetsutil "github.com/grokify/googleutil/sheetsutil/v4"
-	hum "github.com/grokify/mogo/net/httputilmore"
+	"github.com/grokify/mogo/net/http/httputilmore"
 
 	"github.com/grokify/groupbot"
 )
@@ -18,7 +18,7 @@ func NewIntent() groupbot.Intent {
 	}
 }
 
-func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*hum.ResponseInfo, error) {
+func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*httputilmore.ResponseInfo, error) {
 	return bot.SendGlipPost(glipPostEventInfo, buildPost(bot))
 }
 
