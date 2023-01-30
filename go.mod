@@ -8,7 +8,7 @@ require (
 	github.com/grokify/go-ringcentral-client v0.3.12
 	github.com/grokify/goauth v0.17.4
 	github.com/grokify/googleutil v0.1.19
-	github.com/grokify/mogo v0.45.0
+	github.com/grokify/mogo v0.46.0
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/api v0.107.0
 )
@@ -40,13 +40,13 @@ require (
 	github.com/valyala/fastjson v1.6.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
-	golang.org/x/exp v0.0.0-20230113213754-f9f960f08ad4 // indirect
+	golang.org/x/exp v0.0.0-20230127193734-31bee513bff7 // indirect
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20230113154510-dbe35b8444a5 // indirect
+	google.golang.org/genproto v0.0.0-20230127162408-596548ed4efa // indirect
 	google.golang.org/grpc v1.52.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/oleiade/reflections.v1 v1.0.0 // indirect
