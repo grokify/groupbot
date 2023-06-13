@@ -22,7 +22,7 @@ func main() {
 	// Check and load environment file if necessary
 	engine := os.Getenv("GROUPBOT_ENGINE")
 	if len(engine) == 0 {
-		err := cfg.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+		_, err := cfg.LoadDotEnv([]string{os.Getenv("ENV_PATH"), "./.env"}, 1)
 		if err != nil {
 			log.Println(err.Error())
 		}
