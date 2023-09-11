@@ -72,8 +72,8 @@ github.com/googleapis/gax-go/v2 v2.12.0 h1:A+gCJKdRfqXkr+BIRGtZLibNXf0m1f9E4HG56
 github.com/googleapis/gax-go/v2 v2.12.0/go.mod h1:y+aIqrI5eb1YGMVJfuV3185Ts/D7qKpsEkdD5+I6QGU=
 github.com/gorilla/css v1.0.0 h1:BQqNyPTi50JCFMTw/b67hByjMVXZRwGha6wxVGkeihY=
 github.com/gorilla/css v1.0.0/go.mod h1:Dn721qIggHpt4+EFCcTLTU/vk5ySda2ReITrtgBl60c=
-github.com/grokify/go-ringcentral-client v0.3.15 h1:41Wcap+Dwru/hH4oVaUG1f0XjWvHSiZw/qnYsgq+ylg=
-github.com/grokify/go-ringcentral-client v0.3.15/go.mod h1:FzVU7cvvhTV39pYisRBvkmhojcmV5EHgokoZw1FtLcQ=
+github.com/grokify/go-ringcentral-client v0.3.16 h1:+uHnPmUYEAIDfSbewuG3aBFUj5GiJ+ObmMr6wkwikDo=
+github.com/grokify/go-ringcentral-client v0.3.16/go.mod h1:IpKsus3eY5KJ3GhdT1+D4Nu+rJAXNBi3RpeKTXX4aaE=
 github.com/grokify/go-scim-client v0.1.15 h1:fuGDsLZTI9cUtqlRwswA009lTOimNrBt3/PdoEPrqhM=
 github.com/grokify/go-scim-client v0.1.15/go.mod h1:fnuVQ1agr1EIM1OwLZLRriG1NXOwZyumTYTSfbs07Ug=
 github.com/grokify/goauth v0.20.2 h1:lD1oe1R3AzFdzCLoJOqjvs/r9GOkVTm62HDS/L/OFA0=
