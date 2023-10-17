@@ -8,7 +8,7 @@ require (
 	github.com/grokify/go-ringcentral-client v0.3.16
 	github.com/grokify/goauth v0.20.2
 	github.com/grokify/googleutil v0.1.24
-	github.com/grokify/mogo v0.56.0
+	github.com/grokify/mogo v0.57.0
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.147.0
 )
@@ -35,13 +35,13 @@ require (
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/martinlindhe/base36 v1.1.1 // indirect
-	github.com/microcosm-cc/bluemonday v1.0.25 // indirect
+	github.com/microcosm-cc/bluemonday v1.0.26 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/valyala/fastjson v1.6.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
-	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
+	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
