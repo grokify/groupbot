@@ -7,7 +7,7 @@ go 1.21
 require (
 	github.com/aws/aws-lambda-go v1.41.0
 	github.com/caarlos0/env/v6 v6.10.1
-	github.com/grokify/go-ringcentral-client v0.3.16
+	github.com/grokify/go-ringcentral-client v0.3.17
 	github.com/grokify/goauth v0.20.4
 	github.com/grokify/googleutil v0.1.25
 	github.com/grokify/mogo v0.60.0
@@ -16,7 +16,7 @@ require (
 )
 
 require (
-	cloud.google.com/go/compute v1.23.1 // indirect
+	cloud.google.com/go/compute v1.23.2 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/Iwark/spreadsheet v0.0.0-20230915040305-7677e8164883 // indirect
 	github.com/antihax/optional v1.0.0 // indirect
@@ -28,8 +28,8 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
-	github.com/google/uuid v1.3.1 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.3.1 // indirect
+	github.com/google/uuid v1.4.0 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/grokify/go-scim-client v0.1.16 // indirect
