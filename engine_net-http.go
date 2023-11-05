@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/grokify/mogo/log/logutil"
+	"github.com/grokify/mogo/net/http/httputilmore"
 )
 
 func ServeNetHTTP(intentRouter IntentRouter) {
@@ -19,5 +21,6 @@ func ServeNetHTTP(intentRouter IntentRouter) {
 	mux.HandleFunc("/webhook/", http.HandlerFunc(bot.HandleNetHTTP))
 
 	log.Printf("Starting server on port [%v]", bot.AppConfig.Port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", bot.AppConfig.Port), mux))
+	svr := httputilmore.NewServerTimeouts(fmt.Sprintf(":%v", bot.AppConfig.Port), mux, 3*time.Second)
+	log.Fatal(svr.ListenAndServe())
 }
