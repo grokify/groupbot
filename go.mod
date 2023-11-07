@@ -12,7 +12,7 @@ require (
 	github.com/grokify/googleutil v0.1.26
 	github.com/grokify/mogo v0.60.1
 	github.com/sirupsen/logrus v1.9.3
-	google.golang.org/api v0.149.0
+	google.golang.org/api v0.150.0
 )
 
 require (
