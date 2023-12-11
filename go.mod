@@ -9,7 +9,7 @@ require (
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/grokify/go-ringcentral-client v0.3.17
 	github.com/grokify/goauth v0.20.6
-	github.com/grokify/googleutil v0.1.27
+	github.com/grokify/googleutil v0.1.28
 	github.com/grokify/mogo v0.62.2
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.153.0
