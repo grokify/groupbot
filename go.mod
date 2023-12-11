@@ -9,7 +9,7 @@ require (
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/grokify/go-ringcentral-client v0.3.17
 	github.com/grokify/goauth v0.20.6
-	github.com/grokify/googleutil v0.1.27
+	github.com/grokify/googleutil v0.1.28
 	github.com/grokify/mogo v0.62.2
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.153.0
@@ -29,7 +29,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
-	github.com/grokify/go-scim-client v0.1.17 // indirect
+	github.com/grokify/go-scim-client v0.1.18 // indirect
 	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
