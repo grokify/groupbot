@@ -7,7 +7,7 @@ go 1.21
 require (
 	github.com/aws/aws-lambda-go v1.45.0
 	github.com/caarlos0/env/v6 v6.10.1
-	github.com/grokify/go-ringcentral-client v0.3.18
+	github.com/grokify/go-ringcentral-client v0.3.19
 	github.com/grokify/goauth v0.20.10
 	github.com/grokify/googleutil v0.2.0
 	github.com/grokify/mogo v0.62.8
