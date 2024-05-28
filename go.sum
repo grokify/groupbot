@@ -79,8 +79,8 @@ github.com/grokify/goauth v0.21.0 h1:hZvKGmIBV/JhbtiNI8VZGBlEk4OnEvDr9RZlRXlVVa4
 github.com/grokify/goauth v0.21.0/go.mod h1:kVdZYB9ZGV84c+EVzh4cCUmqFFlx++UxhUtJpipfD/s=
 github.com/grokify/googleutil v0.2.4 h1:JDmt2USpGonWsQzS+5gIGv4gH+RlLYlKFNw0+faVbxU=
 github.com/grokify/googleutil v0.2.4/go.mod h1:80FM7qxKWk2bNto7x4FNH3bFw0yRjQjnQJ/mP7Z0/Pk=
-github.com/grokify/mogo v0.63.11 h1:vgh5nSuhJZMTZ2TkNt7s3e/T3lY6xGlB0q28ez3JOXk=
-github.com/grokify/mogo v0.63.11/go.mod h1:xiALI6FeTSs7FBOvTmYbeB3PzXNQryidUAQXZYB83Cc=
+github.com/grokify/mogo v0.64.0 h1:v32BZwLcEzqmi+fMpKHO5OTZwk/0e7Mj6ZhoTASy/9Q=
+github.com/grokify/mogo v0.64.0/go.mod h1:xiALI6FeTSs7FBOvTmYbeB3PzXNQryidUAQXZYB83Cc=
 github.com/huandu/xstrings v1.4.0 h1:D17IlohoQq4UcpqD7fDk80P7l+lwAmlFaBHgOipl2FU=
 github.com/huandu/xstrings v1.4.0/go.mod h1:y5/lhBue+AyNmUVz9RLU9xbLR0o4KIIExikq4ovT0aE=
 github.com/jessevdk/go-flags v1.5.0 h1:1jKYvbxEjfUl0fmqTCOfonvskHHXMjBySTLW4y9LFvc=
