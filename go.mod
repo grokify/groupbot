@@ -10,7 +10,7 @@ require (
 	github.com/grokify/go-ringcentral-client v0.3.22
 	github.com/grokify/goauth v0.21.2
 	github.com/grokify/googleutil v0.2.4
-	github.com/grokify/mogo v0.64.2
+	github.com/grokify/mogo v0.64.5
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.185.0
 )
@@ -34,8 +34,8 @@ require (
 	github.com/googleapis/gax-go/v2 v2.12.4 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/grokify/go-scim-client v0.1.20 // indirect
-	github.com/huandu/xstrings v1.4.0 // indirect
-	github.com/jessevdk/go-flags v1.5.0 // indirect
+	github.com/huandu/xstrings v1.5.0 // indirect
+	github.com/jessevdk/go-flags v1.6.1 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/martinlindhe/base36 v1.1.1 // indirect
@@ -48,7 +48,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.27.0 // indirect
 	go.opentelemetry.io/otel/trace v1.27.0 // indirect
 	golang.org/x/crypto v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20240531132922-fd00a4e0eefc // indirect
+	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/oauth2 v0.21.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
