@@ -12,11 +12,11 @@ require (
 	github.com/grokify/googleutil v0.2.6
 	github.com/grokify/mogo v0.64.8
 	github.com/sirupsen/logrus v1.9.3
-	google.golang.org/api v0.192.0
+	google.golang.org/api v0.194.0
 )
 
 require (
-	cloud.google.com/go/auth v0.8.1 // indirect
+	cloud.google.com/go/auth v0.9.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
 	cloud.google.com/go/compute/metadata v0.5.0 // indirect
 	github.com/Iwark/spreadsheet v0.0.0-20230915040305-7677e8164883 // indirect
