@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
-	sheetsutil "github.com/grokify/googleutil/sheetsutil/v4"
+	"github.com/grokify/googleutil/docsutil"
 	"github.com/grokify/mogo/net/http/httputilmore"
 
 	"github.com/grokify/groupbot"
@@ -23,7 +23,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 }
 
 func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
-	spreadsheetURL := sheetsutil.SheetToWebURL(bot.AppConfig.GoogleSpreadsheetID)
+	spreadsheetURL := docsutil.BuildDocsURL(docsutil.DocSlugSpreadsheet, bot.AppConfig.GoogleSpreadsheetID)
 	return rc.GlipCreatePost{
 		Text: fmt.Sprintf("I am a bot accessing this Google sheet:\n\n%s\n\nYou can find my code here: [grokify/groupbot](https://github.com/grokify/groupbot).", spreadsheetURL),
 	}
