@@ -10,7 +10,7 @@ require (
 	github.com/grokify/go-ringcentral-client v0.3.22
 	github.com/grokify/goauth v0.21.10
 	github.com/grokify/googleutil v0.3.0
-	github.com/grokify/mogo v0.64.9
+	github.com/grokify/mogo v0.64.10
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.196.0
 )
