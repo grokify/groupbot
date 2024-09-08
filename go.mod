@@ -1,16 +1,15 @@
 module github.com/grokify/groupbot
 
 go 1.22.0
-
-toolchain go1.22.2
+toolchain go1.22.7
 
 require (
 	github.com/aws/aws-lambda-go v1.47.0
 	github.com/caarlos0/env/v6 v6.10.1
-	github.com/grokify/go-ringcentral-client v0.3.22
-	github.com/grokify/goauth v0.21.10
+	github.com/grokify/go-ringcentral-client v0.3.23
+	github.com/grokify/goauth v0.22.0
 	github.com/grokify/googleutil v0.3.0
-	github.com/grokify/mogo v0.64.9
+	github.com/grokify/mogo v0.64.10
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.196.0
 )
@@ -32,7 +31,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.13.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
-	github.com/grokify/go-scim-client v0.1.20 // indirect
+	github.com/grokify/go-scim-client v0.1.21 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/jessevdk/go-flags v1.6.1 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
