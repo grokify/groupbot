@@ -10,7 +10,7 @@ import (
 	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
 	"github.com/grokify/goauth/authutil"
 	gu "github.com/grokify/goauth/google"
-	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
+	"github.com/grokify/gogoogle/sheetsutil/v4/sheetsmap"
 	sheets "google.golang.org/api/sheets/v4"
 )
 

@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
-	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
+	"github.com/grokify/gogoogle/sheetsutil/v4/sheetsmap"
 	"github.com/grokify/mogo/html/htmlutil"
 	"github.com/grokify/mogo/net/http/httputilmore"
 

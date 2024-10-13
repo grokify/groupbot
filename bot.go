@@ -14,7 +14,7 @@ import (
 	env "github.com/caarlos0/env/v6"
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
 	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
-	"github.com/grokify/googleutil/sheetsutil/v4/sheetsmap"
+	"github.com/grokify/gogoogle/sheetsutil/v4/sheetsmap"
 	"github.com/grokify/mogo/encoding/jsonutil"
 	hum "github.com/grokify/mogo/net/http/httputilmore"
 	"github.com/grokify/mogo/type/stringsutil"

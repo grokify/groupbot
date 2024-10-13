@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
-	"github.com/grokify/googleutil/docsutil"
+	"github.com/grokify/gogoogle/docsutil"
 	"github.com/grokify/mogo/net/http/httputilmore"
 
 	"github.com/grokify/groupbot"
