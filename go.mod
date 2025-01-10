@@ -10,7 +10,7 @@ require (
 	github.com/grokify/gogoogle v0.4.2
 	github.com/grokify/mogo v0.67.1
 	github.com/sirupsen/logrus v1.9.3
-	google.golang.org/api v0.214.0
+	google.golang.org/api v0.216.0
 )
 
 require (
@@ -47,7 +47,7 @@ require (
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67 // indirect
 	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/oauth2 v0.24.0 // indirect
+	golang.org/x/oauth2 v0.25.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250102185135-69823020774d // indirect
