@@ -2,13 +2,15 @@ module github.com/grokify/groupbot
 
 go 1.23.2
 
+toolchain go1.24.1
+
 require (
 	github.com/aws/aws-lambda-go v1.47.0
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/grokify/go-ringcentral-client v0.3.27
 	github.com/grokify/goauth v0.23.6
 	github.com/grokify/gogoogle v0.6.2
-	github.com/grokify/mogo v0.68.1
+	github.com/grokify/mogo v0.68.4
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.222.0
 )
@@ -44,13 +46,13 @@ require (
 	go.opentelemetry.io/otel v1.34.0 // indirect
 	go.opentelemetry.io/otel/metric v1.34.0 // indirect
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
-	golang.org/x/crypto v0.34.0 // indirect
-	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
-	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/crypto v0.36.0 // indirect
+	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.26.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250219182151-9fdb1cabc7b2 // indirect
 	google.golang.org/grpc v1.70.0 // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 )
