@@ -3,7 +3,7 @@ module github.com/grokify/groupbot
 go 1.23.2
 
 require (
-	github.com/aws/aws-lambda-go v1.47.0
+	github.com/aws/aws-lambda-go v1.48.0
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/grokify/go-ringcentral-client v0.3.27
 	github.com/grokify/goauth v0.23.6
