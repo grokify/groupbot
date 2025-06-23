@@ -3,12 +3,12 @@ module github.com/grokify/groupbot
 go 1.23.2
 
 require (
-	github.com/aws/aws-lambda-go v1.48.0
-	github.com/caarlos0/env/v6 v6.10.1
-	github.com/grokify/go-ringcentral-client v0.3.27
-	github.com/grokify/goauth v0.23.8
-	github.com/grokify/gogoogle v0.6.5
-	github.com/grokify/mogo v0.68.4
+	github.com/aws/aws-lambda-go v1.49.0
+	github.com/caarlos0/env/v11 v11.3.1
+	github.com/grokify/go-ringcentral-client v0.3.29
+	github.com/grokify/goauth v0.23.15
+	github.com/grokify/gogoogle v0.6.8
+	github.com/grokify/mogo v0.70.9
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.238.0
 )
@@ -20,9 +20,8 @@ require (
 	github.com/Iwark/spreadsheet v0.0.0-20230915040305-7677e8164883 // indirect
 	github.com/antihax/optional v1.0.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
-	github.com/caarlos0/env/v11 v11.3.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/go-logr/logr v1.4.2 // indirect
+	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
@@ -30,7 +29,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.14.2 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
-	github.com/grokify/go-scim-client v0.1.26 // indirect
+	github.com/grokify/go-scim-client v0.1.28 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/jessevdk/go-flags v1.6.1 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
@@ -45,7 +44,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.36.0 // indirect
 	go.opentelemetry.io/otel/trace v1.36.0 // indirect
 	golang.org/x/crypto v0.39.0 // indirect
-	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
+	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
