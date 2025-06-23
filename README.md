@@ -5,8 +5,8 @@
 [![Docs][docs-godoc-svg]][docs-godoc-url]
 [![License][license-svg]][license-url]
 
- [build-status-svg]: https://github.com/grokify/groupbot/workflows/test/badge.svg
- [build-status-url]: https://github.com/grokify/groupbot/actions
+ [build-status-svg]: https://github.com/grokify/groupbot/actions/workflows/ci.yaml/badge.svg?branch=master
+ [build-status-url]: https://github.com/grokify/groupbot/actions/workflows/ci.yaml
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/groupbot
  [goreport-url]: https://goreportcard.com/report/github.com/grokify/groupbot
  [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.svg
