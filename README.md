@@ -1,12 +1,15 @@
 # GroupBot
 
 [![Build Status][build-status-svg]][build-status-url]
+[![Lint Status][lint-status-svg]][lint-status-url]
 [![Go Report Card][goreport-svg]][goreport-url]
 [![Docs][docs-godoc-svg]][docs-godoc-url]
 [![License][license-svg]][license-url]
 
  [build-status-svg]: https://github.com/grokify/groupbot/actions/workflows/ci.yaml/badge.svg?branch=master
  [build-status-url]: https://github.com/grokify/groupbot/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/grokify/groupbot/actions/workflows/lint.yaml/badge.svg?branch=master
+ [lint-status-url]: https://github.com/grokify/groupbot/actions/workflows/lint.yaml
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/groupbot
  [goreport-url]: https://goreportcard.com/report/github.com/grokify/groupbot
  [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.svg

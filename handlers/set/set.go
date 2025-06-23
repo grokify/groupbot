@@ -3,13 +3,13 @@ package set
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
 
 	rc "github.com/grokify/go-ringcentral-client/office/v1/client"
 	ru "github.com/grokify/go-ringcentral-client/office/v1/util"
-	"github.com/grokify/gogoogle/sheetsutil/v4/sheetsmap"
 	"github.com/grokify/mogo/net/http/httputilmore"
 	log "github.com/sirupsen/logrus"
 
@@ -47,7 +47,7 @@ func handleIntentMulti(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipP
 	updateCount := 0
 	errorTexts := []string{}
 	for _, text := range texts {
-		updated, err := processText(bot, text, creator, &item)
+		updated, err := processText(bot, text, creator)
 		if err != nil {
 			errorCount += 1
 			errorTexts = append(errorTexts, text)
@@ -93,7 +93,7 @@ func TrimSpaceToLower(s string) string {
 	return strings.ToLower(strings.TrimSpace(s))
 }
 
-func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo, item *sheetsmap.Item) (bool, error) {
+func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPersonInfo) (bool, error) {
 	email := creator.Email
 	userText = regexp.MustCompile(`(?i)^\s*set\s+`).ReplaceAllString(userText, "")
 	userText = regexp.MustCompile(`\s*=\s*`).ReplaceAllString(userText, " ")
@@ -113,13 +113,13 @@ func processText(bot *groupbot.Groupbot, userText string, creator *rc.GlipPerson
 
 	_, err := bot.SheetsMap.SetItemKeyString(email, userText)
 	if err != nil {
-		msg := fmt.Errorf("E_CANNOT_ADD_TO_SHEET: USER_KEY[%v] TEXT_VAL[%v]", email, userText)
-		log.Warn(msg.Error())
+		slog.Error("E_CANNOT_ADD_TO_SHEET", "errMsg", err.Error(), "userKey", email, "textValue", userText)
 		return false, errors.New("cannot understand")
 	}
 	return true, nil
 }
 
+//nolint:unused
 func handleIntentSingle(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*httputilmore.ResponseInfo, error) {
 	text := strings.TrimSpace(ru.StripAtMention(
 		bot.AppConfig.RingCentralBotID, glipPostEventInfo.PostEvent.Text))

@@ -16,11 +16,11 @@ func NewIntent() groupbot.Intent {
 }
 
 func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEventInfo) (*httputilmore.ResponseInfo, error) {
-	glipPost := buildPost(bot)
+	glipPost := buildPost()
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }
 
-func buildPost(bot *groupbot.Groupbot) rc.GlipCreatePost {
+func buildPost() rc.GlipCreatePost {
 	reqBody := rc.GlipCreatePost{
 		Text: "You're welcome! :smiley: Glad to be of assistance.",
 	}

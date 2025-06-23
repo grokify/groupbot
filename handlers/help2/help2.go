@@ -29,6 +29,7 @@ func handleIntent(bot *groupbot.Groupbot, glipPostEventInfo *groupbot.GlipPostEv
 	return bot.SendGlipPost(glipPostEventInfo, glipPost)
 }
 
+//nolint:unused
 func buildPostOld(bot *groupbot.Groupbot) rc.GlipCreatePost {
 	reqBody := rc.GlipCreatePost{}
 

@@ -8,7 +8,7 @@ require (
 	github.com/grokify/go-ringcentral-client v0.3.30
 	github.com/grokify/goauth v0.23.15
 	github.com/grokify/gogoogle v0.6.8
-	github.com/grokify/mogo v0.70.9
+	github.com/grokify/mogo v0.70.10
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/api v0.238.0
 )
