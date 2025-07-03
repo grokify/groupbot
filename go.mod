@@ -10,7 +10,7 @@ require (
 	github.com/grokify/gogoogle v0.6.8
 	github.com/grokify/mogo v0.70.10
 	github.com/sirupsen/logrus v1.9.3
-	google.golang.org/api v0.238.0
+	google.golang.org/api v0.240.0
 )
 
 require (
